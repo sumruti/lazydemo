@@ -5,7 +5,7 @@
 export const environment = {
   production: false
 };
-export const SERVER_URL = 'http://localhost:3000';
+export const SERVER_URL = 'https://lazybackend.herokuapp.com';
 
 
 /*
