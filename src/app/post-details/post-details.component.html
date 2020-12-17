@@ -1,0 +1,16 @@
+<div class="main_div">
+<img src="./assets/back.svg" *ngIf="!data" style="position: absolute;left: 25%;
+    cursor: pointer;" (click)="back()"> <p *ngIf="!data" style="text-align: center;">No record found</p>
+
+  <form *ngIf="data">
+    <img src="./assets/back.svg" style="position: absolute;left: 25%;
+    cursor: pointer;" (click)="back()">
+    <label>Title : <b>{{data.title}}</b></label><br><br>
+    
+
+    <label for="fname">Body</label>
+    <textarea readonly="" style="height: 109px">{{data.body}}</textarea> 
+
+
+  </form>
+</div>
