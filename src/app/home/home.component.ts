@@ -25,6 +25,9 @@ export class HomeComponent implements OnInit {
 
 
   getResult(){
+  if(!this.id){
+     return;
+  }
      this.router.navigateByUrl('/post/'+this.id);
 
   }
