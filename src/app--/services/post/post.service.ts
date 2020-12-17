@@ -16,8 +16,4 @@ export class PostService {
 
       return this.http.get(`${SERVER_URL}`+'/items/'+id)
   }
-
-  randomPhotos(page: number = 1) {
-    return this.http.get(`https://randomuser.me/api/?page=${page}&results=10`)
-  }
 }

@@ -9,10 +9,6 @@ import { PostService } from '../services/post/post.service';
 })
 export class PostDetailsComponent implements OnInit {
   data:any;
-  query: any = <any>{};
-  items: any = [];
-  page: number = 1;
-
   constructor(
 
      public activatedRoute: ActivatedRoute,
@@ -22,38 +18,14 @@ export class PostDetailsComponent implements OnInit {
 
   ngOnInit(): void {
       this.getPostId();
-      this.getPhotos();
   }
-
-  getPhotos() {
-    this.postService.randomPhotos(this.page)
-      .subscribe((res:any) => {
-          var data = res.results;
-          for (let i = 0; i < data.length; i++) {
-
-                   this.items.push({
-                      email: data[i].email,
-                      last: data[i].name.last,
-                      value: data[i].id.value,
-                   })
-
-
-          }
-      })
-  }
-
-  onScroll() {
-       this.page++
-      this.getPhotos();
-    
-}
 
   getPostId(){
     let id = this.activatedRoute.snapshot.paramMap.get('id');
     try{
       this.postService.getPostId(id).subscribe((data : any) => {
-      this.data = data;
-          
+          console.log(data)
+          this.data = data;
 
       })
     }catch(err){
