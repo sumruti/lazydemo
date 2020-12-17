@@ -11,6 +11,7 @@ export class PostDetailsComponent implements OnInit {
   data:any;
   query: any = <any>{};
   items: any = [];
+  isLoding=true;
   page: number = 1;
 
   constructor(
@@ -21,8 +22,9 @@ export class PostDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-      this.getPostId();
       this.getPhotos();
+      this.getPostId();
+      
   }
 
   getPhotos() {
@@ -53,10 +55,12 @@ export class PostDetailsComponent implements OnInit {
     try{
       this.postService.getPostId(id).subscribe((data : any) => {
       this.data = data;
+       this.isLoding = false
           
 
       })
     }catch(err){
+    this.isLoding = false
        console.log(err)
     }
   }
