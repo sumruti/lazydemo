@@ -4,12 +4,12 @@
                 <div class="column is-full">
                     <nav class="navbar py-2" aria-label="main navigation">
                         <div class="navbar-brand column is-one-fifth pl-0 is-hidden-mobile">
-                            <a class="navbar-item pl-0 is-hidden-mobile" href="index.html">
+                            <a class="navbar-item pl-0 is-hidden-mobile" href="#">
                                 <img src="../assets/img/logo_1.png" alt="" />
                             </a>
                         </div>
                         <div class="is-hidden-desktop is-flex is-align-items-center is-justify-content-space-between">
-                            <a class="mobile-icon is-hidden-desktop" href="index.html"> FAIR<span>SQUARE</span> </a>
+                            <a class="mobile-icon is-hidden-desktop" href="#"> FAIR<span>SQUARE</span> </a>
                             <div class="is-flex">
                                 <a class="call is-hidden-desktop"><i class="fas fa-phone-alt"></i></a>
                                 <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
@@ -23,7 +23,7 @@
                             <div class="navbar-end">
                                 <a class="navbar-item"> Used Cars </a>
 
-                                <a class="navbar-item" href="vehicle_page.html">New Cars</a>
+                                <a class="navbar-item" href="#">New Cars</a>
                                 <a class="navbar-item">Finance Calculator</a>
                                 <a class="navbar-item">How it works</a>
                                 <a class="navbar-item">Help & advice</a>
