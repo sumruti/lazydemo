@@ -1,0 +1,14 @@
+// Customizations Here (Optional)
+
+// Bulma Import
+@import '~bulma';
+
+@media (max-width: 1440px) {
+    .py-50 {
+      padding: 30px 0;
+    }
+  
+    .p50 {
+      padding: 30px;
+    }
+  }
