@@ -401,29 +401,38 @@ export default {
         },
 
         changemin(){
-           this.getCars();
+             this.pagination_page_no = 1;
+             this.getCars();
+          
             
              
         },
 
         changemax(){
-           this.getCars();
+          
+             this.pagination_page_no = 1;
+             this.getCars();
             
              
         },
 
 
         changeTerms(){
-            this.getCars();
-        },
-
-        changeMileage(){
+             
+             this.pagination_page_no = 1;
              this.getCars();
         },
 
+        changeMileage(){
+              this.pagination_page_no = 1;
+              this.getCars();
+              
+        },
+
         carType(){
-            this.car_Type = event.target.value;
-            this.getCars();
+             this.car_Type = event.target.value;
+             this.pagination_page_no = 1;
+             this.getCars();
 
         },
 
