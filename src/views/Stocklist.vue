@@ -163,7 +163,7 @@
                               <img src="../assets/img/icon5.png" alt="heart" />
                            </div>
                            <p class="font14 clr_gray pt-1 pb-1">
-                             {{item.derivative}}{{item.colour_spec}}<br />
+                             {{item.derivative}} <br />
                               Your price: £{{item.current_price}}
                            </p>
                            <h2 class="is-inline-block font-600">£{{item.monthly_payment}} <span class="clr_gray font12 is-block has-text-right">Per Month</span></h2>
@@ -373,10 +373,12 @@ export default {
 
    methods: {
         getPriceFilter(event) {
+           this.pagination_page_no = 1;
            this.sortBy = event.target.value;
            this.getCars();
         },
         FinanceType() {
+           this.pagination_page_no = 1;
            this.getCars();
         },
 
