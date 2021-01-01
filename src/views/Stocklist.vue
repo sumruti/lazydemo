@@ -1,5 +1,9 @@
 <template>
+
   <div class="stocklist">
+     <div class="loder_main"  v-if="IsLoading">
+      <div class="loader_"></div>
+     </div> 
     <div class="full-widht bg-gray pt-4 collapsible">
          <a href="#" class="show-collapsed">
             <h2>Change search criteria</h2>
@@ -16,11 +20,11 @@
                      <form action="#" class="is-flex is-justify-content-space-between">
                         <div class="columns is-variable bd-klmn-columns is-3">
                            <div class="input-group column is-6 pt-0 font14">
-                              <input type="radio" id="HP" name="rsvp" checked />
+                              <input type="radio" id="HP" name="rsvp" checked  v-model="Finance_Type" v-bind:value="'car_loan_hp'" @change="FinanceType($event)"/>
                               <label for="HP">HP</label>
                            </div>
                            <div class="input-group column is-6 pt-0 font14">
-                              <input type="radio" id="PCP" name="rsvp" />
+                              <input type="radio" id="PCP" name="rsvp"  v-model="Finance_Type" v-bind:value="'new_car_pcp'" @change="FinanceType($event)"/>
                               <label for="PCP">PCP</label>
                            </div>
                         </div>
@@ -32,11 +36,11 @@
                      <div class="is-flex is-justify-content-space-between">
                         <div class="columns is-variable bd-klmn-columns is-3">
                            <div class="input-group column is-6 pt-0 font14">
-                              <input type="radio" id="monthly_budget" name="rsvp" checked />
+                              <input type="radio" id="monthly_budget" name="rsvp_" checked />
                               <label for="monthly_budget">Monthly budget</label>
                            </div>
                            <div class="input-group column is-6 pt-0">
-                              <input type="radio" id="Car-price" name="rsvp" />
+                              <input type="radio" id="Car-price" name="rsvp_" />
                               <label for="Car-price">Car price</label>
                            </div>
                         </div>
@@ -46,33 +50,33 @@
                   <div class="range-slider pt-5">
                      <div class="font12 range_value font-weight-bold clr_gray is-justify-content-space-between is-flex">
                         <label class="">Minimum</label>
-                        <label class="range-slider__value">£1,000</label>
+                        <label class="range-slider__value">£{{min}}</label>
                      </div>
-                     <input class="range-slider__range" type="range" value="100" min="0" max="1000">
+                     <input class="range-slider__range" v-model="min" type="range" min="1" max="100000" step="1" @change="changemin()" >
                   </div>
                   <!-- =================================  section  =================================   -->
                   <div class="range-slider pt-5">
                      <div class="font12 range_value font-weight-bold clr_gray is-justify-content-space-between is-flex">
                         <label class="">Maximum</label>
-                        <label class="range-slider__value">£15,000</label>
+                        <label class="range-slider__value">£{{max}}</label>
                      </div>
-                     <input class="range-slider__range" type="range" value="1000" min="0" max="15000">
+                     <input class="range-slider__range"  v-model="max" type="range" min="1" max="100000" step="1" @change="changemax()">
                   </div>
                   <!-- =================================  section  =================================   -->
                   <div class="range-slider pt-5">
                      <div class="font12 range_value font-weight-bold clr_gray is-justify-content-space-between is-flex">
                         <label class="">Term</label>
-                        <label class="range-slider__value">32 months</label>
+                        <label class="range-slider__value">{{terms}} months</label>
                      </div>
-                     <input class="range-slider__range" type="range" value="5" min="0" max="12">
+                     <input class="range-slider__range" v-model="terms" type="range" min="1" max="48" step="1" @change="changeTerms()">
                   </div>
                   <!-- =================================  section  =================================   -->
                   <div class="range-slider pt-5">
                      <div class="font12 range_value font-weight-bold clr_gray is-justify-content-space-between is-flex">
                         <label class="">Mileage</label>
-                        <label class="range-slider__value">8,000 miles</label>
+                        <label class="range-slider__value">{{mileage}} miles</label>
                      </div>
-                     <input class="range-slider__range" type="range" value="1000" min="0" max="8000">
+                     <input class="range-slider__range"  v-model="mileage" type="range" min="50" max="25000" step="1" @change="changeMileage()">
                   </div>
                   <hr />
                   <!--  ============================= radio =============================  -->
@@ -80,11 +84,11 @@
                   <div class="is-flex is-justify-content-space-between">
                      <div class="columns is-variable bd-klmn-columns is-3 pt-5">
                         <div class="input-group column is-6 pt-0 font14">
-                           <input type="radio" id="New" name="New" />
+                           <input type="radio" id="New" name="rsvp" v-model="car_Type" v-bind:value="'new'" @change="carType($event)"/>
                            <label for="New">New</label>
                         </div>
                         <div class="input-group column is-6 pt-0 font14">
-                           <input type="radio" id="Used" name="rsvp" />
+                           <input type="radio" id="Used" name="rsvp" v-model="car_Type" v-bind:value="'used'" @change="carType($event)"/>
                            <label for="Used">Used</label>
                         </div>
                      </div>
@@ -127,7 +131,7 @@
                <div class="right_header">
                   <div class="columns is-flex is-justify-content-space-between is-align-items-center">
                      <div class="column">
-                        <h6 class="clr_gray font-600">We have found 340 cars for you...</h6>
+                        <h6 class="clr_gray font-600">We have found {{totalCars}} cars for you...</h6>
                      </div>
                      <div class="column">
                         <div class="is-flex is-align-items-center is-justify-content-flex-end">
@@ -135,9 +139,9 @@
                            <div class="control is-flex is-align-items-center">
                               <h6 class="clr_gray font12">Sort by:</h6>
                               <div class="select">
-                                 <select class="w-100 font12 font-weight-bold clr_gray pr-4 op7 border-0 font16 clr_gray">
-                                    <option>Lowest price</option>
-                                    <option>Lowest price</option>
+                                 <select class="w-100 font12 font-weight-bold clr_gray pr-4 op7 border-0 font16 clr_gray" @change="getPriceFilter($event)"  v-model="sortBy">
+                                    <option value="ASC">Lowest price</option>
+                                    <option value="DESC">Highest price</option>
                                  </select>
                               </div>
                            </div>
@@ -145,190 +149,46 @@
                      </div>
                   </div>
                </div>
-               <div class="columns">
+               <div class="columns" v-if="cars && cars.length">
                   <!--  ============================= aside =============================  -->
-                  <div class="column is-4-desktop column is-6-tablet column is-12-mobile">
+                  <div class="column is-4-desktop column is-6-tablet column is-12-mobile" v-for="item in cars" :key="item.id">
                      <div class="card">
                         <div class="postion-relative">
-                           <img src="../assets/img/car1.jpg" class="w-100" alt="Toyota C-HR" />
+                            <img v-bind:src="item.thumb_url"  class="w-100"  />
                            <h5 class="cwhite postion-absolute overlay-text font14 font-600">2 Year Warranty</h5>
                         </div>
                         <div class="card_content">
                            <div class="is-flex is-align-items-center is-justify-content-space-between">
-                              <h5 class="menu-label font-weight-bold font16 has-text-left postion-relative mb-0 is-capitalized">Toyota C-HR</h5>
+                              <h5 class="menu-label font-weight-bold font16 has-text-left postion-relative mb-0 is-capitalized">{{item.make}}{{item.model}}</h5>
                               <img src="../assets/img/icon5.png" alt="heart" />
                            </div>
                            <p class="font14 clr_gray pt-1 pb-1">
-                              1.8 Hybrid Dynamic 5dr CVT<br />
-                              Your price: £21,074.25
+                             {{item.derivative}}{{item.colour_spec}}<br />
+                              Your price: £{{item.current_price}}
                            </p>
-                           <h2 class="is-inline-block font-600">£481.92 <span class="clr_gray font12 is-block has-text-right">Per Month</span></h2>
+                           <h2 class="is-inline-block font-600">£{{item.monthly_payment}} <span class="clr_gray font12 is-block has-text-right">Per Month</span></h2>
                         </div>
                         <div class="card-footer">
                            <ul class="is-flex is-justify-content-space-between w-100">
                               <li class="font12 font-600">12.9k</li>
-                              <li class="font12 font-600">2018</li>
-                              <li class="font12 font-600">Hybrid</li>
+                              <li class="font12 font-600">{{item.model_year}}</li>
+                              <li class="font12 font-600">{{item.model}}</li>
                               <li class="font12 font-600">1.8L</li>
-                              <li class="font12 font-600">Automatic</li>
+                              <li class="font12 font-600">{{item.transmission}}</li>
                            </ul>
                         </div>
                      </div>
                   </div>
-                  <!--  ============================= aside =============================  -->
-                  <div class="column is-4-desktop column is-6-tablet column is-12-mobile">
-                     <div class="card">
-                        <div class="postion-relative">
-                           <img src="../assets/img/car1.jpg" class="w-100" alt="Toyota C-HR" />
-                           <h5 class="cwhite postion-absolute overlay-text font14 font-600">2 Year Warranty</h5>
-                        </div>
-                        <div class="card_content">
-                           <div class="is-flex is-align-items-center is-justify-content-space-between">
-                              <h5 class="menu-label font-weight-bold font16 has-text-left postion-relative mb-0 is-capitalized">Toyota C-HR</h5>
-                              <img src="../assets/img/icon5.png" alt="heart" />
-                           </div>
-                           <p class="font14 clr_gray pt-1 pb-1">
-                              1.8 Hybrid Dynamic 5dr CVT<br />
-                              Your price: £21,074.25
-                           </p>
-                           <h2 class="is-inline-block font-600">£481.92 <span class="clr_gray font12 is-block has-text-right">Per Month</span></h2>
-                        </div>
-                        <div class="card-footer">
-                           <ul class="is-flex is-justify-content-space-between w-100">
-                              <li class="font12 font-600">12.9k</li>
-                              <li class="font12 font-600">2018</li>
-                              <li class="font12 font-600">Hybrid</li>
-                              <li class="font12 font-600">1.8L</li>
-                              <li class="font12 font-600">Automatic</li>
-                           </ul>
-                        </div>
-                     </div>
-                  </div>
-                  <!--  ============================= aside =============================  -->
-                  <div class="column is-4-desktop column is-6-tablet column is-12-mobile">
-                     <div class="card">
-                        <div class="postion-relative">
-                           <img src="../assets/img/car1.jpg" class="w-100" alt="Toyota C-HR" />
-                           <h5 class="cwhite postion-absolute overlay-text font14 font-600">2 Year Warranty</h5>
-                        </div>
-                        <div class="card_content">
-                           <div class="is-flex is-align-items-center is-justify-content-space-between">
-                              <h5 class="menu-label font-weight-bold font16 has-text-left postion-relative mb-0 is-capitalized">Toyota C-HR</h5>
-                              <img src="../assets/img/icon5.png" alt="heart" />
-                           </div>
-                           <p class="font14 clr_gray pt-1 pb-1">
-                              1.8 Hybrid Dynamic 5dr CVT<br />
-                              Your price: £21,074.25
-                           </p>
-                           <h2 class="is-inline-block font-600">£481.92 <span class="clr_gray font12 is-block has-text-right">Per Month</span></h2>
-                        </div>
-                        <div class="card-footer">
-                           <ul class="is-flex is-justify-content-space-between w-100">
-                              <li class="font12 font-600">12.9k</li>
-                              <li class="font12 font-600">2018</li>
-                              <li class="font12 font-600">Hybrid</li>
-                              <li class="font12 font-600">1.8L</li>
-                              <li class="font12 font-600">Automatic</li>
-                           </ul>
-                        </div>
-                     </div>
-                  </div>
-                  <!--  ============================= aside =============================  -->
-                  <div class="column is-4-desktop column is-6-tablet column is-12-mobile">
-                     <div class="card">
-                        <div class="postion-relative">
-                           <img src="../assets/img/car1.jpg" class="w-100" alt="Toyota C-HR" />
-                           <h5 class="cwhite postion-absolute overlay-text font14 font-600">2 Year Warranty</h5>
-                        </div>
-                        <div class="card_content">
-                           <div class="is-flex is-align-items-center is-justify-content-space-between">
-                              <h5 class="menu-label font-weight-bold font16 has-text-left postion-relative mb-0 is-capitalized">Toyota C-HR</h5>
-                              <img src="../assets/img/icon5.png" alt="heart" />
-                           </div>
-                           <p class="font14 clr_gray pt-1 pb-1">
-                              1.8 Hybrid Dynamic 5dr CVT<br />
-                              Your price: £21,074.25
-                           </p>
-                           <h2 class="is-inline-block font-600">£481.92 <span class="clr_gray font12 is-block has-text-right">Per Month</span></h2>
-                        </div>
-                        <div class="card-footer">
-                           <ul class="is-flex is-justify-content-space-between w-100">
-                              <li class="font12 font-600">12.9k</li>
-                              <li class="font12 font-600">2018</li>
-                              <li class="font12 font-600">Hybrid</li>
-                              <li class="font12 font-600">1.8L</li>
-                              <li class="font12 font-600">Automatic</li>
-                           </ul>
-                        </div>
-                     </div>
-                  </div>
-                  <!--  ============================= aside =============================  -->
-                  <div class="column is-4-desktop column is-6-tablet column is-12-mobile">
-                     <div class="card">
-                        <div class="postion-relative">
-                           <img src="../assets/img/car1.jpg" class="w-100" alt="Toyota C-HR" />
-                           <h5 class="cwhite postion-absolute overlay-text font14 font-600">2 Year Warranty</h5>
-                        </div>
-                        <div class="card_content">
-                           <div class="is-flex is-align-items-center is-justify-content-space-between">
-                              <h5 class="menu-label font-weight-bold font16 has-text-left postion-relative mb-0 is-capitalized">Toyota C-HR</h5>
-                              <img src="../assets/img/icon5.png" alt="heart" />
-                           </div>
-                           <p class="font14 clr_gray pt-1 pb-1">
-                              1.8 Hybrid Dynamic 5dr CVT<br />
-                              Your price: £21,074.25
-                           </p>
-                           <h2 class="is-inline-block font-600">£481.92 <span class="clr_gray font12 is-block has-text-right">Per Month</span></h2>
-                        </div>
-                        <div class="card-footer">
-                           <ul class="is-flex is-justify-content-space-between w-100">
-                              <li class="font12 font-600">12.9k</li>
-                              <li class="font12 font-600">2018</li>
-                              <li class="font12 font-600">Hybrid</li>
-                              <li class="font12 font-600">1.8L</li>
-                              <li class="font12 font-600">Automatic</li>
-                           </ul>
-                        </div>
-                     </div>
-                  </div>
-                  <!--  ============================= aside =============================  -->
-                  <div class="column is-4-desktop column is-6-tablet column is-12-mobile">
-                     <div class="card">
-                        <div class="postion-relative">
-                           <img src="../assets/img/car1.jpg" class="w-100" alt="Toyota C-HR" />
-                           <h5 class="cwhite postion-absolute overlay-text font14 font-600">2 Year Warranty</h5>
-                        </div>
-                        <div class="card_content">
-                           <div class="is-flex is-align-items-center is-justify-content-space-between">
-                              <h5 class="menu-label font-weight-bold font16 has-text-left postion-relative mb-0 is-capitalized">Toyota C-HR</h5>
-                              <img src="../assets/img/icon5.png" alt="heart" />
-                           </div>
-                           <p class="font14 clr_gray pt-1 pb-1">
-                              1.8 Hybrid Dynamic 5dr CVT<br />
-                              Your price: £21,074.25
-                           </p>
-                           <h2 class="is-inline-block font-600">£481.92 <span class="clr_gray font12 is-block has-text-right">Per Month</span></h2>
-                        </div>
-                        <div class="card-footer">
-                           <ul class="is-flex is-justify-content-space-between w-100">
-                              <li class="font12 font-600">12.9k</li>
-                              <li class="font12 font-600">2018</li>
-                              <li class="font12 font-600">Hybrid</li>
-                              <li class="font12 font-600">1.8L</li>
-                              <li class="font12 font-600">Automatic</li>
-                           </ul>
-                        </div>
-                     </div>
-                  </div>
+                 
                </div>
                <!-- =================================  section  =================================  -->
-               <div class="benifits_section gradiant is-desktop-flex is-align-items-center mt-60">
+               <!--<div class="benifits_section gradiant is-desktop-flex is-align-items-center mt-60">
                   <div class="columns is-vcentered benifits_inner">
                      <div class="container_inner is-flex is-align-items-center w-100">
                         <div class="column is-4-desktop column is-6-tablet column is-12-mobile">
                            <div class="card">
                               <div class="postion-relative">
-                                 <img src="../assets/img/car1.jpg" class="w-100" alt="toyota" />
+                                 <img src="" class="w-100" alt="toyota" />
                                  <h5 class="cwhite postion-absolute overlay-text font14 font-600">2 Year Warranty</h5>
                               </div>
                               <div class="card_content">
@@ -363,185 +223,13 @@
                         </div>
                      </div>
                   </div>
-               </div>
+               </div>-->
                <!-- =================================  section start =================================  -->
                <div class="listing">
                   <div class="columns">
                      <!--  ============================= aside =============================  -->
                      <div class="container_inner is-flex is-align-items-center is-flex-wrap-wrap">
-                        <div class="column is-4-desktop column is-6-tablet column is-12-mobile">
-                           <div class="card">
-                              <div class="postion-relative">
-                                 <img src="../assets/img/car1.jpg" class="w-100" alt="Toyota C-HR" />
-                                 <h5 class="cwhite postion-absolute overlay-text font14 font-600">2 Year Warranty</h5>
-                              </div>
-                              <div class="card_content">
-                                 <div class="is-flex is-align-items-center is-justify-content-space-between">
-                                    <h5 class="menu-label font-weight-bold font16 has-text-left postion-relative mb-0 is-capitalized">Toyota C-HR</h5>
-                                    <img src="../assets/img/icon5.png" alt="heart" />
-                                 </div>
-                                 <p class="font14 clr_gray pt-1 pb-1">
-                                    1.8 Hybrid Dynamic 5dr CVT<br />
-                                    Your price: £21,074.25
-                                 </p>
-                                 <h2 class="is-inline-block font-600">£481.92 <span class="clr_gray font12 is-block has-text-right">Per Month</span></h2>
-                              </div>
-                              <div class="card-footer">
-                                 <ul class="is-flex is-justify-content-space-between w-100">
-                                    <li class="font12 font-600">12.9k</li>
-                                    <li class="font12 font-600">2018</li>
-                                    <li class="font12 font-600">Hybrid</li>
-                                    <li class="font12 font-600">1.8L</li>
-                                    <li class="font12 font-600">Automatic</li>
-                                 </ul>
-                              </div>
-                           </div>
-                        </div>
-                        <!--  ============================= aside =============================  -->
-                        <div class="column is-4-desktop column is-6-tablet column is-12-mobile">
-                           <div class="card">
-                              <div class="postion-relative">
-                                 <img src="../assets/img/car1.jpg" class="w-100" alt="Toyota C-HR" />
-                                 <h5 class="cwhite postion-absolute overlay-text font14 font-600">2 Year Warranty</h5>
-                              </div>
-                              <div class="card_content">
-                                 <div class="is-flex is-align-items-center is-justify-content-space-between">
-                                    <h5 class="menu-label font-weight-bold font16 has-text-left postion-relative mb-0 is-capitalized">Toyota C-HR</h5>
-                                    <img src="../assets/img/icon5.png" alt="heart" />
-                                 </div>
-                                 <p class="font14 clr_gray pt-1 pb-1">
-                                    1.8 Hybrid Dynamic 5dr CVT<br />
-                                    Your price: £21,074.25
-                                 </p>
-                                 <h2 class="is-inline-block font-600">£481.92 <span class="clr_gray font12 is-block has-text-right">Per Month</span></h2>
-                              </div>
-                              <div class="card-footer">
-                                 <ul class="is-flex is-justify-content-space-between w-100">
-                                    <li class="font12 font-600">12.9k</li>
-                                    <li class="font12 font-600">2018</li>
-                                    <li class="font12 font-600">Hybrid</li>
-                                    <li class="font12 font-600">1.8L</li>
-                                    <li class="font12 font-600">Automatic</li>
-                                 </ul>
-                              </div>
-                           </div>
-                        </div>
-                        <!--  ============================= aside =============================  -->
-                        <div class="column is-4-desktop column is-6-tablet column is-12-mobile">
-                           <div class="card">
-                              <div class="postion-relative">
-                                 <img src="../assets/img/car1.jpg" class="w-100" alt="Toyota C-HR" />
-                                 <h5 class="cwhite postion-absolute overlay-text font14 font-600">2 Year Warranty</h5>
-                              </div>
-                              <div class="card_content">
-                                 <div class="is-flex is-align-items-center is-justify-content-space-between">
-                                    <h5 class="menu-label font-weight-bold font16 has-text-left postion-relative mb-0 is-capitalized">Toyota C-HR</h5>
-                                    <img src="../assets/img/icon5.png" alt="heart" />
-                                 </div>
-                                 <p class="font14 clr_gray pt-1 pb-1">
-                                    1.8 Hybrid Dynamic 5dr CVT<br />
-                                    Your price: £21,074.25
-                                 </p>
-                                 <h2 class="is-inline-block font-600">£481.92 <span class="clr_gray font12 is-block has-text-right">Per Month</span></h2>
-                              </div>
-                              <div class="card-footer">
-                                 <ul class="is-flex is-justify-content-space-between w-100">
-                                    <li class="font12 font-600">12.9k</li>
-                                    <li class="font12 font-600">2018</li>
-                                    <li class="font12 font-600">Hybrid</li>
-                                    <li class="font12 font-600">1.8L</li>
-                                    <li class="font12 font-600">Automatic</li>
-                                 </ul>
-                              </div>
-                           </div>
-                        </div>
-                        <!--  ============================= aside =============================  -->
-                        <div class="column is-4-desktop column is-6-tablet column is-12-mobile">
-                           <div class="card">
-                              <div class="postion-relative">
-                                 <img src="../assets/img/car1.jpg" class="w-100" alt="Toyota C-HR" />
-                                 <h5 class="cwhite postion-absolute overlay-text font14 font-600">2 Year Warranty</h5>
-                              </div>
-                              <div class="card_content">
-                                 <div class="is-flex is-align-items-center is-justify-content-space-between">
-                                    <h5 class="menu-label font-weight-bold font16 has-text-left postion-relative mb-0 is-capitalized">Toyota C-HR</h5>
-                                    <img src="../assets/img/icon5.png" alt="heart" />
-                                 </div>
-                                 <p class="font14 clr_gray pt-1 pb-1">
-                                    1.8 Hybrid Dynamic 5dr CVT<br />
-                                    Your price: £21,074.25
-                                 </p>
-                                 <h2 class="is-inline-block font-600">£481.92 <span class="clr_gray font12 is-block has-text-right">Per Month</span></h2>
-                              </div>
-                              <div class="card-footer">
-                                 <ul class="is-flex is-justify-content-space-between w-100">
-                                    <li class="font12 font-600">12.9k</li>
-                                    <li class="font12 font-600">2018</li>
-                                    <li class="font12 font-600">Hybrid</li>
-                                    <li class="font12 font-600">1.8L</li>
-                                    <li class="font12 font-600">Automatic</li>
-                                 </ul>
-                              </div>
-                           </div>
-                        </div>
-                        <!--  ============================= aside =============================  -->
-                        <div class="column is-4-desktop column is-6-tablet column is-12-mobile">
-                           <div class="card">
-                              <div class="postion-relative">
-                                 <img src="../assets/img/car1.jpg" class="w-100" alt="Toyota C-HR" />
-                                 <h5 class="cwhite postion-absolute overlay-text font14 font-600">2 Year Warranty</h5>
-                              </div>
-                              <div class="card_content">
-                                 <div class="is-flex is-align-items-center is-justify-content-space-between">
-                                    <h5 class="menu-label font-weight-bold font16 has-text-left postion-relative mb-0 is-capitalized">Toyota C-HR</h5>
-                                    <img src="../assets/img/icon5.png" alt="heart" />
-                                 </div>
-                                 <p class="font14 clr_gray pt-1 pb-1">
-                                    1.8 Hybrid Dynamic 5dr CVT<br />
-                                    Your price: £21,074.25
-                                 </p>
-                                 <h2 class="is-inline-block font-600">£481.92 <span class="clr_gray font12 is-block has-text-right">Per Month</span></h2>
-                              </div>
-                              <div class="card-footer">
-                                 <ul class="is-flex is-justify-content-space-between w-100">
-                                    <li class="font12 font-600">12.9k</li>
-                                    <li class="font12 font-600">2018</li>
-                                    <li class="font12 font-600">Hybrid</li>
-                                    <li class="font12 font-600">1.8L</li>
-                                    <li class="font12 font-600">Automatic</li>
-                                 </ul>
-                              </div>
-                           </div>
-                        </div>
-                        <!--  ============================= aside =============================  -->
-                        <div class="column is-4-desktop column is-6-tablet column is-12-mobile">
-                           <div class="card">
-                              <div class="postion-relative">
-                                 <img src="../assets/img/car1.jpg" class="w-100" alt="Toyota C-HR" />
-                                 <h5 class="cwhite postion-absolute overlay-text font14 font-600">2 Year Warranty</h5>
-                              </div>
-                              <div class="card_content">
-                                 <div class="is-flex is-align-items-center is-justify-content-space-between">
-                                    <h5 class="menu-label font-weight-bold font16 has-text-left postion-relative mb-0 is-capitalized">Toyota C-HR</h5>
-                                    <img src="../assets/img/icon5.png" alt="heart" />
-                                 </div>
-                                 <p class="font14 clr_gray pt-1 pb-1">
-                                    1.8 Hybrid Dynamic 5dr CVT<br />
-                                    Your price: £21,074.25
-                                 </p>
-                                 <h2 class="is-inline-block font-600">£481.92 <span class="clr_gray font12 is-block has-text-right">Per Month</span></h2>
-                              </div>
-                              <div class="card-footer">
-                                 <ul class="is-flex is-justify-content-space-between w-100">
-                                    <li class="font12 font-600">12.9k</li>
-                                    <li class="font12 font-600">2018</li>
-                                    <li class="font12 font-600">Hybrid</li>
-                                    <li class="font12 font-600">1.8L</li>
-                                    <li class="font12 font-600">Automatic</li>
-                                 </ul>
-                              </div>
-                           </div>
-                        </div>
+                       
                         <div class="column is-11 stocklist_content is-flex is-align-items-center m-auto is-12-mobile">
                            <img src="../assets/img/search.svg"  class="pr-5 " alt="Search" />
                            <p class="pt-6 pb-5">
@@ -550,8 +238,8 @@
                            </p>
                         </div>
                         <div class="column is-12 is-justify-content-space-between font16 is-flex stocklist_btn has-text-centered is-12-mobile">
-                           <a href="#" class="btn cwhite bg-gray-light">Previous page</a>
-                           <a href="#" class="btn cwhite bg-pink">Next page</a>
+                           <a href="#" :class="pagination_page_no == 1 ? 'btn cwhite bg-gray-light' :'btn cwhite bg-pink'"  @click="PreviousPage($event)">Previous page</a>
+                           <a href="#"   :class="last_page == pagination_page_no ? 'btn cwhite bg-gray-light' :'btn cwhite bg-pink'" @click="NextPage($event)"> Next page</a>
                         </div>
                      </div>
                   </div>
@@ -660,14 +348,133 @@
 </template>
 
 <script>
-
-
+import {HTTP} from '../http-common'
 
 export default {
-    
-  name: 'stocklist',
-  props: {
-    msg: String
-  }
-}
+  name: 'myStore',
+  data () {
+    return {
+      msg: 'Welcome to my Vuex Store',
+      cars:[],
+      IsLoading:true,
+      sortBy:'ASC',
+      totalCars:0,
+      Finance_Type:'car_loan_hp',
+      pagination_page_no:1,
+      last_page:0,
+      min:1000,
+      max:20000,
+      terms:36,
+      mileage:6000,
+      car_Type:'new'
+      
+    }
+  },
 
+   methods: {
+        getPriceFilter(event) {
+           this.sortBy = event.target.value;
+           this.getCars();
+        },
+        FinanceType() {
+           this.getCars();
+        },
+
+        PreviousPage(){
+            
+            if(this.pagination_page_no > 1){
+               this.pagination_page_no--;
+                this.getCars();
+                this.IsLoading = true;
+            }
+           
+        },
+
+        NextPage(){
+          
+            if(this.last_page > this.pagination_page_no){
+              this.pagination_page_no++;
+              this.getCars();
+              this.IsLoading = true;
+            }
+             
+        },
+
+        changemin(){
+           this.getCars();
+            
+             
+        },
+
+        changemax(){
+           this.getCars();
+            
+             
+        },
+
+
+        changeTerms(){
+            this.getCars();
+        },
+
+        changeMileage(){
+             this.getCars();
+        },
+
+        carType(){
+            this.car_Type = event.target.value;
+            this.getCars();
+
+        },
+
+        getCars(){
+             var postData = {
+        "budget": {"min": 450, "max": 1350},
+        "car": {"age": "",
+                    "body_type": "",
+                    "car_type": this.car_Type,
+                    "colour": "",
+                    "doors": "",
+                    "fuel_type": "",
+                    "make": "",
+                    "mileage": "",
+                    "model": "",
+                    "model_variant": "",
+                    "transmission": ""
+        },
+        "lender":null,
+        "loan":{
+                "deposit": 1000,
+                "mileage": this.mileage,
+                "product": this.Finance_Type,
+                "term": this.terms
+            },
+        "page":this.pagination_page_no,
+        "price": {"min": this.min, "max": this.max},
+        "rating":"excellent"  ,
+        "sort":{"key": "monthly_payment", "order": this.sortBy}
+    };
+   HTTP.post('api/v2/cars/browse',postData)
+        .then(response => {
+             //console.log(response)
+             if(response.status == 200){
+                      this.cars = response.data.results;
+                       this.IsLoading = false;
+                       this.totalCars = response.data.pagination.total;
+                        this.last_page = response.data.pagination.last_page;
+             }else{  
+                 this.IsLoading = false;
+                 
+             }
+            
+           // commit('SET_CARS', response.data)
+        })
+        }
+    },
+ 
+  mounted() {
+        this.getCars();
+  }
+  
+}
+</script>
