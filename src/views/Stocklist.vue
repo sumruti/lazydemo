@@ -718,9 +718,15 @@ export default {
     console.log(this.$route.query.make);
 
     if (this.$route.query.make) {
-      this.make = this.$route.query.make;
-      this.modal = this.$route.query.modal;
-      this.payment = this.$route.query.payment;
+        this.make = this.$route.query.make;
+        this.modal = this.$route.query.modal;
+        this.payment = this.$route.query.payment;
+
+    }
+
+    if (this.$route.query.f) {
+        this.car_Type = this.$route.query.f;
+        
     }
     this.getCars();
     this.GetFiltersettings();

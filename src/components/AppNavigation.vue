@@ -9,7 +9,7 @@
                             </a>
                         </div>
                         <div class="is-hidden-desktop is-flex is-align-items-center is-justify-content-space-between">
-                            <a class="mobile-icon is-hidden-desktop" href="#"> FAIR<span>SQUARE</span> </a>
+                            <a class="mobile-icon is-hidden-desktop" href="/"> FAIR<span>SQUARE</span> </a>
                             <div class="is-flex">
                                 <a class="call is-hidden-desktop"><i class="fas fa-phone-alt"></i></a>
                                 <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
@@ -21,9 +21,9 @@
                         </div>
                         <div id="navbarBasicExample" class="navbar-menu column is-four-fifths pr-0">
                             <div class="navbar-end">
-                                <a class="navbar-item"> Used Cars </a>
+                                <a class="navbar-item" href="/cars?f=used"> Used Cars </a>
 
-                                <a class="navbar-item" href="#">New Cars</a>
+                                <a class="navbar-item" href="/cars?f=new">New Cars</a>
                                 <a class="navbar-item">Finance Calculator</a>
                                 <a class="navbar-item">How it works</a>
                                 <a class="navbar-item">Help & advice</a>
