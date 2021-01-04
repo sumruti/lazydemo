@@ -624,11 +624,12 @@ export default {
             console.log(err.response.data.errors)
           if (err.response.data.errors) {
               
-             Vue.$toast.open({
-                    message:  err.response.data.errors.join(','),
-                    type: 'error',
-                    // all of other options may go here
-                });
+              this.$toasted.show( err.response.data.errors[0],{
+                        type : 'error',
+                         duration: 3000,
+                        closeOnSwipe:true,
+
+                    })
           }
 
           // and so on
