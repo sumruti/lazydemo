@@ -21,12 +21,12 @@ const router = new Router({
             name: 'manufacturer',
             component: () => import('./views/Manufacturer.vue'),
         },{
-            path: '/vehicle',
+            path: '/cars/view/:car_id',
             name: 'vehicle',
             component: () => import('./views/Vehicle.vue'),
         },{
-            path: '/stocklist',
-            name: 'stocklist',
+            path: '/cars',
+            name: 'cars',
             component: () => import('./views/Stocklist.vue'),
         },{
             path: '/modal-number',

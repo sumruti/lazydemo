@@ -1,5 +1,8 @@
 <template>
   <div class="home">
+       <div class="loder_main"  v-if="IsLoading">
+      <div class="loader_"></div>
+     </div> 
      <section class="slide-section is-d-flex is-align-items-center">
             <div class="columns is-vcentered">
                 <div class="column is-two-fifths">
@@ -36,7 +39,7 @@
                         <div id="WebDev" class="content-tab">
                             <div class="hero-foot">
                                 <div class="container">
-                                    <form method="post" action="stocklist.html">
+                                   
                                         <!--  ===============================  nav ===============================  -->
 
                                         <!-- ========================  control ========================   -->
@@ -44,27 +47,30 @@
                                             <!-- ========================  control ========================   -->
                                             <div class="control">
                                                 <div class="select w-100">
-                                                    <select class="w-100 border-0 font16 clr_gray">
-                                                        <option>Choose a make</option>
-                                                        <option>With options</option>
+                                                    <select class="w-100 border-0 font16 clr_gray"   v-model="make">
+                                                        <option value="">Choose a make</option>
+                                                       
+                                                               <option v-for="(option, name) in filters_make" :value="name" :key="option">{{ option }}</option>
+
+
                                                     </select>
                                                 </div>
                                             </div>
                                             <!-- ========================  control ========================   -->
                                             <div class="control">
                                                 <div class="select w-100">
-                                                    <select class="w-100 border-0 font16 clr_gray">
-                                                        <option>Choose a model</option>
-                                                        <option>With options</option>
+                                                    <select class="w-100 border-0 font16 clr_gray"  v-model="modal">
+                                                        <option  value="">Choose a model</option>
+                                                        <option  value="any">Any</option>
                                                     </select>
                                                 </div>
                                             </div>
                                             <!-- ========================  control ========================   -->
                                             <div class="control">
                                                 <div class="select w-100">
-                                                    <select class="w-100 border-0 font16 clr_gray">
-                                                        <option>Max monthly payments</option>
-                                                        <option>With options</option>
+                                                    <select class="w-100 border-0 font16 clr_gray"   v-model="payment">
+                                                        <option value="monthly_payment">Max monthly payments</option>
+                                                        <option value="price">Price</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -72,11 +78,11 @@
 
                                             <div class="field is-grouped px-5 pb-4">
                                                 <div class="control w-100">
-                                                    <button class="button w-100 font16 my-5 bg-pink-dark is-radiusless">Search now</button>
+                                                    <button class="button w-100 font16 my-5 bg-pink-dark is-radiusless"  @click="search($event)">Search now</button>
                                                 </div>
                                             </div>
                                         </div>
-                                    </form>
+                                   
                                 </div>
                             </div>
                         </div>
@@ -311,10 +317,64 @@
 </template>
 
 <script>
+import {HTTP} from '../http-common'
+
 export default {
-  name: 'home',
-  props: {
-    msg: String
+  name: 'myStore',
+  data () {
+    return {
+      msg: 'Welcome to my Vuex Store',
+      filters_make:[],
+      modals_filter:[],
+      IsLoading:true,
+      make:'',
+      modal:'',
+      payment:'monthly_payment'
+      
+    }
+  },
+
+   methods: {
+     
+        GetFiltersettings(){
+            
+               HTTP.get('api/v2/app/settings')
+                .then(response => {
+                    console.log(response.data.fields.stocks.makes)
+                    if(response.status == 200){
+                            this.filters_make = response.data.fields.stocks.makes;
+                            this.modals_filter = response.data.fields.stocks.makes;
+                            this.IsLoading = false;
+                            console.log(this.filters_make)
+                            
+                    }else{  
+                        this.IsLoading = false;
+                        
+                    }
+                    
+                // commit('SET_CARS', response.data)
+                })
+        },
+
+        
+
+
+        search(){
+             if(this.make && this.modal && this.payment){
+                     window.location.href = "/cars?make="+this.make+'&modal='+this.modal+'&payment='+this.payment;
+             }
+              //this.$router.push('/cars?make='+this.make+'&modal='+this.modal+'&payment='+this.payment) 
+             // this.$router.push({ path: 'cars?make='+this.make+'&modal='+this.modal+'&payment='+this.payment })
+              //this.$router.push({path: '/cars', param: {make: this.make, modal: this.modal,payment:this.payment}})
+             
+
+        }
+    },
+ 
+  mounted() {
+        this.GetFiltersettings();
   }
+  
 }
+</script>
 
