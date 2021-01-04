@@ -3,18 +3,20 @@
         <div class="loder_main"  v-if="IsLoading">
       <div class="loader_"></div>
      </div> 
+      <app-navigation></app-navigation>
     <section class="vehicle_page">
       <div class="full-widht has-background-white">
         <div class="is-flex">
           <div id="img_gallery" class="w-100">
-            <VueSlickCarousel v-bind="settings    " :arrows="true" >
-              <!--  ============================= aside =============================  -->
-              <div class="column is-4 p-0"  v-for="item in car_detail.images" :key="item.path">
+            <carousel :per-page="3"  :mouse-drag="true" v-if="car_detail">
+              <slide v-for="(item, index) in car_detail.images" :key="item.path">
+               <div class="column is-4 p-0"  >
                 <div class="postion-relative">
                  
                     <img v-bind:src="item.path" class="w-100" />
                   <div
                     class="w-100 has-text-centered postion-absolute overlay-text"
+                     v-if="index==0"
                   >
                     <h5 class="cwhite font14 font-600 font18">
                       2 Year Warranty
@@ -23,8 +25,10 @@
                 </div>
               </div>
 
+              </slide>
              
-            </VueSlickCarousel>
+            </carousel>
+          
           </div>
         </div>
         <!-- =================================  columns  =================================  -->
@@ -37,7 +41,7 @@
               >
                 <img src="../assets/img/icon5.png" class="pr-6" alt="heart" />
                 <div class="clr_gray">
-                  <h1 class="font-600"> {{ car_detail.make }}{{ car_detail.model }}</h1>
+                  <h1 class="font-600"> {{ car_detail.make }} {{ car_detail.model }}</h1>
                   <span class="ve_title is-block pt-5">
                    {{ car_detail.derivative }} </span
                   >
@@ -50,7 +54,7 @@
                     Your price: £{{ car_detail.current_price }}
                   </p>
                   <h1 class="is-inline-block pt-4 clr-pink font-600">
-                    £{{ car_detail.monthly_payment }}
+                    £{{ monthly_payment}}
                     <span class="clr_gray font18 is-block has-text-right"
                       >Per Month</span
                     >
@@ -61,15 +65,16 @@
                       class="font12 range_value font-weight-bold clr_gray is-justify-content-space-between is-flex"
                     >
                       <label class="op7">Term</label>
-                      <label class="op7">32 months</label>
+                      <label class="op7">{{term_range}} months</label>
                     </div>
                     <input
                       class="slider is-fullwidth w-100"
-                      step="1"
-                      min="0"
-                      max="100"
-                      value="50"
-                      type="range"
+                        v-model="term_range"
+                        type="range"
+                        min="1"
+                        max="48"
+                        step="1"
+                        @change="changetermrange()"
                     />
                   </div>
                   <div class="range_value_slider pt-4">
@@ -99,15 +104,14 @@
             <div class="column is-half">
               <h5 class="font18 is-flex is-align-items-center">
                 <img src="../assets/img/icon5.png" alt="heart" />
-                <strong class="cwhite">Toyota C-HR 1.8</strong> Hybrid Dynamic
-                5dr CVT
+                <strong class="cwhite">    {{ car_detail.make }} {{ car_detail.model }}</strong> {{ car_detail.derivative }}
               </h5>
             </div>
 
             <div class="column is-half is-flex is-justify-content-flex-end">
               <h4 class="font18 font-600">
-                £481.92 per month
-                <a href="#" class="bg-pink cwhite is-inline-block btn"
+                £{{monthly_payment}} per month
+                <a @click="getMyDeal()" href="#" class="bg-pink cwhite is-inline-block btn"
                   >Get my deal</a
                 >
               </h4>
@@ -752,7 +756,7 @@
                 <h5
                   class="menu-label font-weight-bold font16 has-text-left postion-relative mb-0 is-capitalized"
                 >
-                  Toyota C-HR
+                  {{ car_detail.make }} {{ car_detail.model }}
                 </h5>
                 <img src="../assets/img/icon5.png" alt="heart" />
               </div>
@@ -947,19 +951,39 @@
         </div>
       </div>
     </section>
+    <FooterNav/>
   </div>
 </template>
 
 <script>
-import VueSlickCarousel from "vue-slick-carousel";
+//import VueSlickCarousel from "vue-slick-carousel";
 import "vue-slick-carousel/dist/vue-slick-carousel.css";
 // optional style for arrows & dots
 import "vue-slick-carousel/dist/vue-slick-carousel-theme.css";
 import {HTTP} from '../http-common'
+import AppNavigation from '@/components/AppNavigation';
+import FooterNav from '@/components/FooterNav';
+import VueToast from 'vue-toast-notification';
+// Import one of the available themes
+//import 'vue-toast-notification/dist/theme-default.css';
+import 'vue-toast-notification/dist/theme-sugar.css';
+import Vue from 'vue';
+import { Carousel, Slide } from 'vue-carousel';
+
+import VueCarousel from 'vue-carousel';
+ 
+Vue.use(VueCarousel);
+Vue.use(VueToast);
 
 export default {
   name: "vehicle",
-  components: { VueSlickCarousel },
+  components: { 
+    //VueSlickCarousel ,  
+    AppNavigation,
+    FooterNav,
+    Carousel,
+    Slide
+    },
   data: () => ({
     settings: {
       dots: true,
@@ -973,11 +997,19 @@ export default {
     },
     car_detail:[],
     specification:[],
-     IsLoading: true
+     IsLoading: true,
+     term_range:48,
+     monthly_payment:'',
   }),
 
   methods: {
+
+    getMyDeal(){
+       window.location.href = "/application/"+this.$route.params.car_id;
+
+    },
     GetCarById(car_id) {
+      var cardId =  car_id.split('_')[0];
 
         var postData = {
                 car_id: car_id,
@@ -985,17 +1017,15 @@ export default {
                         deposit: 9000,
                         mileage:25000,
                         product: 'new_car_pcp',
-                        term:'48',
+                        term:this.term_range,
                 },
                 rating: "excellent"
-      };
-      HTTP.post("api/v2/cars/view/"+car_id,postData).then((response) => {
-        console.log(response.data);
+           };
+      HTTP.post("api/v2/cars/view/"+cardId,postData).then((response) => {
         if (response.status == 200) {
           this.car_detail = response.data;
           this.specification =  this.car_detail.standard_option.split(",");
           this.IsLoading = false;
-          console.log(this.specification)
         } else {
           this.IsLoading = false;
         }
@@ -1003,12 +1033,61 @@ export default {
       });
     },
 
+     GetCarMonthlyPayment(car_id) {
+      var cardId =  car_id.split('_')[0];
+      var car_type =  car_id.split('_')[1];
+
+        var postData = {
+                  car_type: car_type,
+                  deposit: 9000,
+                  id:cardId,
+                  mileage:25000,
+                  product: 'new_car_pcp',
+                  term:this.term_range,
+                  rating: "excellent"
+           };
+
+     
+      HTTP.post("api/v2/cars/price/"+cardId,postData).then((response) => {
+        console.log(response.data);
+        if (response.status == 200) {
+             console.log("!he")
+             this.monthly_payment = response.data.monthly_payment
+             
+        } else {
+            
+          this.IsLoading = false;
+        }
+
+      }).catch(err => {
+           if (err.response && err.response.status === 422) {
+           if (err.response.data.errors) {
+              console.log('First name errors: '+ err.response.data.errors.join(','));
+              Vue.$toast.open({
+                    message:  err.response.data.errors.join(','),
+                    type: 'error',
+                    // all of other options may go here
+                });
+           } 
+
+           // and so on
+
+       }
+      })
+   
+    },
+
+    changetermrange(){
+        this.GetCarMonthlyPayment(this.$route.params.car_id)
+    }
+
  
   },
 
   mounted() {
        console.log(this.$route.params.car_id);
     this.GetCarById(this.$route.params.car_id);
+    this.GetCarMonthlyPayment(this.$route.params.car_id);
   },
 };
 </script> 

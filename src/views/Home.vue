@@ -1,5 +1,7 @@
 <template>
+
   <div class="home">
+       <app-navigation></app-navigation>
        <div class="loder_main"  v-if="IsLoading">
       <div class="loader_"></div>
      </div> 
@@ -313,14 +315,23 @@
                 </div>
             </div>
         </section>
+        <FooterNav/>
   </div>
 </template>
 
 <script>
 import {HTTP} from '../http-common'
+import AppNavigation from '@/components/AppNavigation';
+import FooterNav from '@/components/FooterNav';
+import VueRouter from 'vue-router';
+
 
 export default {
   name: 'myStore',
+  components: {
+        AppNavigation,
+        FooterNav
+    },
   data () {
     return {
       msg: 'Welcome to my Vuex Store',
@@ -333,6 +344,7 @@ export default {
       
     }
   },
+
 
    methods: {
      
@@ -363,7 +375,20 @@ export default {
              if(this.make && this.modal && this.payment){
                      window.location.href = "/cars?make="+this.make+'&modal='+this.modal+'&payment='+this.payment;
              }
-              //this.$router.push('/cars?make='+this.make+'&modal='+this.modal+'&payment='+this.payment) 
+            // this.$router.push('/cars?make='+this.make+'&modal='+this.modal+'&payment='+this.payment, () => {})
+           
+             const  loca = '/cars?make='+this.make+'&modal='+this.modal+'&payment='+this.payment
+            const originalPush = VueRouter.prototype.push
+
+            VueRouter.prototype.push = function push() {
+                  // console.log(path_)
+                return originalPush.call(this, loca).catch(err => err)
+
+            }
+
+            //if (this.$route.path !== path) this.$router.push(path)
+
+              //this.$router.replace('/cars?make='+this.make+'&modal='+this.modal+'&payment='+this.payment) 
              // this.$router.push({ path: 'cars?make='+this.make+'&modal='+this.modal+'&payment='+this.payment })
               //this.$router.push({path: '/cars', param: {make: this.make, modal: this.modal,payment:this.payment}})
              

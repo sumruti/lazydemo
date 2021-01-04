@@ -1,8 +1,7 @@
 <template>
   <div id="app">
-    <app-navigation></app-navigation>
         <router-view/>
-    <FooterNav/>
+  
 
   </div>
 </template>
@@ -13,8 +12,8 @@ import FooterNav from '@/components/FooterNav';
 export default {
     name: 'App',
     components: {
-        AppNavigation,
-        FooterNav
+       // AppNavigation,
+        //FooterNav
     }
 };
 </script>

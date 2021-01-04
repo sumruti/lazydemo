@@ -1,5 +1,6 @@
 <template>
   <div class="stocklist">
+     <app-navigation></app-navigation>
     <div class="loder_main" v-if="IsLoading">
       <div class="loader_"></div>
     </div>
@@ -16,7 +17,7 @@
             <h5
               class="menu-label font-600 clr_gray font16 has-text-left postion-relative mb-0 is-capitalized"
             >
-              Your finance details
+              Your finance details <span @click="reset()" style="float: right;color: #ff23b7;cursor: pointer;">Reset</span>
             </h5>
             <div class="aside_wrapper pt-5">
               <h6 class="is-capitalized mb-3 header-inner font-600">
@@ -528,14 +529,20 @@
         </div>
       </div>
     </section>
+     <FooterNav/>
   </div>
 </template>
 
 <script>
 import { HTTP } from "../http-common";
-
+import AppNavigation from '@/components/AppNavigation';
+import FooterNav from '@/components/FooterNav';
 export default {
   name: "myStore",
+  components: {
+        AppNavigation,
+        FooterNav
+  },
   data() {
     return {
       msg: "Welcome to my Vuex Store",
@@ -636,7 +643,8 @@ export default {
 
     getCarDetails(data){
         //this.$router.push({path: '/cars/view/'+data.id+'_'+data.mileage+'_'+})
-         window.location.href = "/cars/view/"+data.id;
+        console.log(data)
+         window.location.href = "/cars/view/"+data.id+'_'+this.car_Type;
     },
 
 
@@ -699,6 +707,11 @@ export default {
         // commit('SET_CARS', response.data)
       });
     },
+
+    reset(){
+      window.location.href = "/cars"
+        
+    }
   },
 
   mounted() {

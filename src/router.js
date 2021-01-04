@@ -13,7 +13,7 @@ const router = new Router({
             name: 'home',
             component: () => import('./views/Home.vue'),
         },{
-            path: '/application',
+            path: '/application/:car_id',
             name: 'application',
             component: () => import('./views/Application.vue'),
         },{
