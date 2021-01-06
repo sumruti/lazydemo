@@ -49,7 +49,7 @@ const router = new Router({
             name: 'help-advise',
             component: () => import('./views/help-advise.vue'),
         },{
-            path: '/help-and-advice-content',
+            path: '/help-and-advice-content/:id',
             name: 'help-and-advice-content',
             component: () => import('./views/help-and-advice-content.vue'),
         },{

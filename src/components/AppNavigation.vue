@@ -30,7 +30,7 @@
                                 <router-link  to="/how-it-work"  :class="activeIndex == '/how-it-work' ? 'navbar-item active': 'navbar-item'">How it works</router-link>
                                 <router-link :class="activeIndex == '/help-advise' ? 'navbar-item active': 'navbar-item'"   to="/help-advise">Help & advice</router-link>
                                 <router-link :class="activeIndex == '/blog' ? 'navbar-item active': 'navbar-item'"   to="/blog" >Blog</router-link>
-                                <router-link class="navbar-item bg-pink cwhite mx-4">0345 003 0008</router-link>
+                                <router-link class="navbar-item bg-pink cwhite mx-4" to="#">0345 003 0008</router-link>
                                 <router-link to="/login" class="navbar-item border-0">
                                     <img src="../assets/img/user.png" alt="like">
                                     <span class="pl-3"> Log in</span>
@@ -53,9 +53,15 @@ export default {
     };
   },
 
+  methods: {
+
+  },
+  
+
    mounted() {
-       this.activeIndex = this.$route.fullPath;
-       console.log(this.$route)
+        this.activeIndex = this.$route.fullPath;
+         window.scrollTo(0,0);
+       
   }
 };
 </script>

@@ -27,7 +27,7 @@
                 <div class="column is-one-fifth links2 order4">
                     <p class="font-weight-bold">Help and Advice</p>
                     <ul class="pt-2">
-                        <li><a href="#">FAQs</a></li>
+                        <li><router-link to="/help-advise">FAQs</router-link></li>
                         <li><a href="#">Finance</a></li>
                         <li><a href="#">products</a></li>
                         <li><router-link to="/how-it-work">How it works</router-link></li>

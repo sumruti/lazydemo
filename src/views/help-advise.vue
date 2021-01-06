@@ -107,59 +107,15 @@
                     </div>
 
                     <ul class="help_tabs">
-                        <li>
-                            <a href="#">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua?
-                                <span><i class="fas fa-arrow-right"></i></span>
-                            </a>
-                        </li>
 
-                        <li>
-                            <a href="#">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua?
-                                <span><i class="fas fa-arrow-right"></i></span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua?
-                                <span><i class="fas fa-arrow-right"></i></span>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="#">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua?
-                                <span><i class="fas fa-arrow-right"></i></span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua?
-                                <span><i class="fas fa-arrow-right"></i></span>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="#">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua?
-                                <span><i class="fas fa-arrow-right"></i></span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua?
-                                <span><i class="fas fa-arrow-right"></i></span>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="#">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua?
-                                <span><i class="fas fa-arrow-right"></i></span>
+                         <li v-for="(item, index) in faq" :key="index">
+                            <a to="#" @click="getQuite(item)">
+                                {{item}}&nbsp; <span><i class="fas fa-arrow-right"></i></span>
                             </a>
                         </li>
                     </ul>
+                  <div v-html="content" id="div_html" ></div>
+
                 </div>
 
                 <div class="column is-one-third">
@@ -236,6 +192,8 @@
 import AppNavigation from "@/components/AppNavigation";
 import FooterNav from "@/components/FooterNav";
 //import VueRouter from 'vue-router';
+import axios from 'axios';
+
 
 export default {
   name: "help-advise",
@@ -245,9 +203,77 @@ export default {
   },
   data() {
     return {
-      IsLoading: false,
+      IsLoading: true,
+      content:'',
+      faq:[]
     };
   },
+
+   methods: {
+     
+        GetFiltersettings(){
+            
+               axios.get('https://content.fairsquare.com/wp-json/wp/v2/pages?slug=faqs&fields=id,title.rendered,link,content.rendered,slug,acf,yoast')
+                .then(async response => {
+                   
+                    if(response.status == 200){
+                            
+                                this.content = await response.data[0].content.rendered;
+
+
+
+                                setTimeout(async () => {
+                                        this.faq= await this.stringBuilder(document.querySelector('.s-article__pink-list'));
+                                        document.getElementById("div_html").style.display = "none";
+                                        this.IsLoading = false;
+                                },3000);
+
+                                     
+                                
+
+                            
+                           
+                           
+                            
+                    }else{  
+                        this.IsLoading = false;
+                        
+                    }
+                    
+                })
+        },
+
+        stringBuilder(ul, prefix) {
+            prefix = prefix || '';
+             console.log(ul)
+            var arr = Array.prototype.slice.call(ul.children);
+           
+            var stringArr = arr.map(function (li) {
+                if (li.children.length > 1) {
+                   // return stringBuilder(li.querySelector('ul'), prefix + li.querySelector('a').textContent + '/');
+                } else {
+                    return prefix + li.querySelector('a').textContent;
+                }
+            });
+            return [].concat.apply([], stringArr);
+        },
+
+        getQuite(item){
+
+                console.log(item.split(' ').join('-'))
+                this.$router.push('/help-and-advice-content/'+item.split(' ').join('-')) 
+        }
+
+        
+
+
+    },
+ 
+  mounted() {
+        this.GetFiltersettings();
+        
+
+  }
 };
 </script>
 

@@ -8,7 +8,7 @@
         <section class="finance_header is-flex is-align-items-center">
          <div class="columns">
             <div class="column is-full">
-               <h1 class="cwhite">Lorem ipsum dolor sit amet</h1>
+               <h1 class="cwhite">{{title}}</h1>
             </div>
          </div>
       </section>
@@ -18,10 +18,10 @@
             <div class="is-vcentered fix-width help_tab column two-thirds-tablet">
                <div class="help_content_wrapper">
                   <div class="back_pager">
-                     <a href="help_advise.html" class="clr_gray font12 font-600 is-inline-block w-100 pb-5 pt-4"><span class="mr-3"><i class="fas fa-arrow-left"></i></span> Back to help and advice</a>
+                     <router-link to="/help-advise" class="clr_gray font12 font-600 is-inline-block w-100 pb-5 pt-4"><span class="mr-3"><i class="fas fa-arrow-left"></i></span> Back to help and advice</router-link>
                   </div>
                   <div class="margintop60 pb-4">
-                     <h3 class="common-heading clr_gray">Lorem ipsum dolor sit amet</h3>
+                     <h3 class="common-heading clr_gray">{{title}}</h3>
                      <p class="font18 clr_gray pt-4">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
                      </p>
@@ -129,6 +129,7 @@
             </div>
          </div>
       </section>
+
       <!-- =================================Manufacturer-content Section  End=================================   -->
       <section class="section_4 mt-0">
          <div class="columns cl_col_2">
@@ -152,6 +153,7 @@
 import AppNavigation from "@/components/AppNavigation";
 import FooterNav from "@/components/FooterNav";
 //import VueRouter from 'vue-router';
+import axios from 'axios';
 
 export default {
   name: "help-and-advice-content",
@@ -162,8 +164,71 @@ export default {
   data() {
     return {
       IsLoading: false,
+      content:'',
+      title:''
     };
   },
+
+  methods: {
+     
+        GetFiltersettings(){
+            
+               axios.get('https://content.fairsquare.com/wp-json/wp/v2/pages?slug=faqs&fields=id,title.rendered,link,content.rendered,slug,acf,yoast')
+                .then(async response => {
+                   
+                    if(response.status == 200){
+                            
+                                this.content = await response.data[0].content.rendered;
+
+
+
+                                setTimeout(async () => {
+                                        this.faq= await this.stringBuilder(document.querySelector('.s-article__pink-list'));
+                                        document.getElementById("div_html").style.display = "none";
+                                        this.IsLoading = false;
+                                },3000);
+
+                                     
+                                
+
+                            
+                           
+                           
+                            
+                    }else{  
+                        this.IsLoading = false;
+                        
+                    }
+                    
+                })
+        },
+
+        stringBuilder(ul, prefix) {
+            prefix = prefix || '';
+            var arr = Array.prototype.slice.call(ul.children);
+           
+            var stringArr = arr.map(function (li) {
+                if (li.children.length > 1) {
+                   // return stringBuilder(li.querySelector('ul'), prefix + li.querySelector('a').textContent + '/');
+                } else {
+                    return prefix + li.querySelector('a').textContent;
+                }
+            });
+            return [].concat.apply([], stringArr);
+        }
+
+        
+
+
+    },
+ 
+  mounted() {
+        this.GetFiltersettings();
+        this.title = this.$route.params.id.split("-").join(' ');
+        window.scrollTo(0,0);
+        
+
+  }
 };
 </script>
 
