@@ -15,11 +15,11 @@
                     <p class="font-weight-bold">Navigation</p>
                     <ul class="pt-2">
                         <li><a href="#">Home</a></li>
-                        <li><a href="#">Browse cars</a></li>
+                        <li><router-link to="/cars">Browse cars</router-link></li>
                         <li><a href="#">Sell my car</a></li>
-                        <li><a href="#">How it works</a></li>
+                        <li><router-link to="/how-it-work">How it works</router-link></li>
                         <li><a href="#">Contact us</a></li>
-                        <li><a href="#">Log in</a></li>
+                        <li><router-link href="/to">Log in</router-link></li>
                         <li></li>
                     </ul>
                 </div>
@@ -30,9 +30,9 @@
                         <li><a href="#">FAQs</a></li>
                         <li><a href="#">Finance</a></li>
                         <li><a href="#">products</a></li>
-                        <li><a href="#">How it works</a></li>
+                        <li><router-link to="/how-it-work">How it works</router-link></li>
                         <li><a href="#">Cancellation</a></li>
-                        <li><a href="#">Blog</a></li>
+                        <li><router-link to="/blog">Blog</router-link></li>
                         <li></li>
                     </ul>
                 </div>
