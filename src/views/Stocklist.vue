@@ -642,9 +642,7 @@ export default {
     },
 
     getCarDetails(data){
-        //this.$router.push({path: '/cars/view/'+data.id+'_'+data.mileage+'_'+})
-        console.log(data)
-         window.location.href = "/cars/view/"+data.id+'_'+this.car_Type;
+         this.$router.push("/cars/view/"+data.id+'_'+this.car_Type) 
     },
 
 
@@ -709,7 +707,7 @@ export default {
     },
 
     reset(){
-      window.location.href = "/cars"
+     this.$router.push('/cars') 
         
     }
   },

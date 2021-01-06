@@ -6,7 +6,7 @@ Vue.use(Router);
 
 const router = new Router({
     mode: 'history',
-    base: 'http://localhost:8080',
+    base: '',
     routes: [
         {
             path: '/',
@@ -32,6 +32,34 @@ const router = new Router({
             path: '/modal-number',
             name: 'modal',
             component: () => import('./views/ModalVue.vue'),
+        },{
+            path: '/blog-listing',
+            name: 'blogListing',
+            component: () => import('./views/blogListing.vue'),
+        },{
+            path: '/blog',
+            name: 'blog',
+            component: () => import('./views/blog.vue'),
+        },{
+            path: '/finance-calculater',
+            name: 'finance-calculater',
+            component: () => import('./views/finance-calculater.vue'),
+        },{
+            path: '/help-advise',
+            name: 'help-advise',
+            component: () => import('./views/help-advise.vue'),
+        },{
+            path: '/help-and-advice-content',
+            name: 'help-and-advice-content',
+            component: () => import('./views/help-and-advice-content.vue'),
+        },{
+            path: '/how-it-work',
+            name: 'how-it-work',
+            component: () => import('./views/how-it-work.vue'),
+        },{
+            path: '/login',
+            name: 'login',
+            component: () => import('./views/login.vue'),
         }
         
     ]

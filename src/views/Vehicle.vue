@@ -1005,7 +1005,7 @@ export default {
   methods: {
 
     getMyDeal(){
-       window.location.href = "/application/"+this.$route.params.car_id;
+        this.$router.push("/application/"+this.$route.params.car_id) 
 
     },
     GetCarById(car_id) {
