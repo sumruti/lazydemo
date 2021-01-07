@@ -1,34 +1,33 @@
 <template>
   <div class="vehicle">
-        <div class="loder_main"  v-if="IsLoading">
+    <div class="loder_main" v-if="IsLoading">
       <div class="loader_"></div>
-     </div> 
-      <app-navigation></app-navigation>
+    </div>
+    <app-navigation></app-navigation>
     <section class="vehicle_page">
       <div class="full-widht has-background-white">
         <div class="is-flex">
           <div id="img_gallery" class="w-100">
-            <carousel :per-page="3"  :mouse-drag="true" v-if="car_detail">
-              <slide v-for="(item, index) in car_detail.images" :key="item.path">
-               <div class="column is-4 p-0"  >
-                <div class="postion-relative">
-                 
-                    <img v-bind:src="item.path" class="w-100" />
-                  <div
-                    class="w-100 has-text-centered postion-absolute overlay-text"
-                     v-if="index==0"
-                  >
-                    <h5 class="cwhite font14 font-600 font18">
-                      2 Year Warranty
-                    </h5>
+            <carousel :per-page="3" :mouse-drag="true" v-if="car_detail">
+              <slide
+                v-for="(item, index) in carimages"
+                :key="index"
+              >
+                <div class="column is-4 p-0">
+                  <div class="postion-relative">
+                    <img v-bind:src="item" class="w-100" />
+                    <div
+                      class="w-100 has-text-centered postion-absolute overlay-text"
+                      v-if="index == 0"
+                    >
+                      <h5 class="cwhite font14 font-600 font18">
+                        2 Year Warranty
+                      </h5>
+                    </div>
                   </div>
                 </div>
-              </div>
-
               </slide>
-             
             </carousel>
-          
           </div>
         </div>
         <!-- =================================  columns  =================================  -->
@@ -37,13 +36,13 @@
             <!-- =================================  columns  =================================  -->
             <div class="is-flex is-align-items-center w-100 postion-relative">
               <div
-                class="column is-three-quarters is-flex is-align-items-start"
+                class="column is-three-quarters is-flex-tablet is-align-items-start"
               >
                 <img src="../assets/img/icon5.png" class="pr-6" alt="heart" />
                 <div class="clr_gray">
-                  <h1 class="font-600"> {{ car_detail.make }} {{ car_detail.model }}</h1>
+                  <h1 class="font-600">Toyota C-HR</h1>
                   <span class="ve_title is-block pt-5">
-                   {{ car_detail.derivative }} </span
+                    1.8 Hybrid Dynamic 5dr CVT</span
                   >
                 </div>
               </div>
@@ -51,7 +50,7 @@
               <div class="column is-one-quarter right-card">
                 <div class="card p-lg-6 has-text-centered mt-60">
                   <p class="is-inline-block pt-2 clr_gray font14">
-                    Your price: £{{ car_detail.current_price }}
+                     Your price: £{{ car_detail.current_price }}
                   </p>
                   <h1 class="is-inline-block pt-4 clr-pink font-600">
                     £{{ monthly_payment}}
@@ -60,15 +59,15 @@
                     >
                   </h1>
 
-                  <div class="range_value_slider pt-5">
+                  <div class="range-slider pt-5">
                     <div
                       class="font12 range_value font-weight-bold clr_gray is-justify-content-space-between is-flex"
                     >
-                      <label class="op7">Term</label>
-                      <label class="op7">{{term_range}} months</label>
+                      <label class="">Term</label>
+                      <label class="range-slider__value">{{term_range}} months</label>
                     </div>
                     <input
-                      class="slider is-fullwidth w-100"
+                       class="range-slider__range"
                         v-model="term_range"
                         type="range"
                         min="1"
@@ -77,21 +76,27 @@
                         @change="changetermrange()"
                     />
                   </div>
-                  <div class="range_value_slider pt-4">
+                  <div class="range-slider pt-5">
                     <div
                       class="font12 range_value font-weight-bold clr_gray is-justify-content-space-between is-flex"
                     >
-                      <label class="op7">Deposit</label>
-                      <label class="op7">£4,000</label>
+                      <label class="">Deposit</label>
+                      <label class="range-slider__value">£4,000</label>
                     </div>
                     <input
-                      class="slider is-fullwidth w-100"
-                      step="1"
-                      min="0"
-                      max="100"
-                      value="50"
+                      class="range-slider__range"
                       type="range"
+                      value="1000"
+                      min="0"
+                      max="15000"
                     />
+                  </div>
+                  <div class="is-hidden-tablet">
+                    <div class="btn-section">
+                      <a href="#" class="call_btn">Call us on 0345 003 0008</a>
+                      <a href="#" class="get_started_btn">Get started</a>
+                      <a href="#" class="call_now">Have a car to sell?</a>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -99,20 +104,31 @@
           </div>
         </div>
         <!-- =================================  section  =================================  -->
-        <div class="bg_gray w-100 cwhite postion-relative">
+        <div class="bg_gray w-100 cwhite postion-fixed bottom-0 onmobile">
           <div class="columns is-align-items-center v_header_title">
-            <div class="column is-half">
+            <div class="column is-half is-hidden-mobile">
               <h5 class="font18 is-flex is-align-items-center">
                 <img src="../assets/img/icon5.png" alt="heart" />
-                <strong class="cwhite">    {{ car_detail.make }} {{ car_detail.model }}</strong> {{ car_detail.derivative }}
+                <strong class="cwhite">Toyota C-HR 1.8</strong> Hybrid Dynamic
+                5dr CVT
               </h5>
             </div>
 
-            <div class="column is-half is-flex is-justify-content-flex-end">
+            <div
+              class="column is-half-tablet is-flex is-justify-content-flex-end"
+            >
               <h4 class="font18 font-600">
-                £{{monthly_payment}} per month
-                <a @click="getMyDeal()" href="#" class="bg-pink cwhite is-inline-block btn"
+                <span class="price">  £{{monthly_payment}} per month</span>
+                <a
+                  href="#"
+                  class="bg-pink cwhite is-inline-block btn is-hidden-mobile"
+                  @click="getMyDeal()"
                   >Get my deal</a
+                >
+                <a
+                  href="#"
+                  class="bg-pink is-hidden-tablet cwhite is-inline-block btn"
+                  >Get started</a
                 >
               </h4>
             </div>
@@ -123,74 +139,72 @@
           <div class="columns is-align-items-center">
             <div class="work-progress w-100">
               <div class="container_inner">
-                <div class="column is-full postion-relative p100">
-                  <ul
-                    class="clr_gray is-flex-desktop has-text-centered pt-3 w-100"
-                  >
-                    <!-- =================================  section  =================================   -->
-                    <li class="w-100 px-2">
-                      <span class="postion-relative w-100 is-inline-block mb-1">
-                        <span class="rounded border-white">
-                          <img
-                            src="../assets/img/icon1w.png"
-                            class=""
-                            alt="icon1.png"
-                          />
-                        </span>
-                        <span class="steps postion-absolute">
-                          <span class="steps1"></span>
-                          <span class="steps2"></span>
-                          <span class="steps3"></span>
-                          <span class="steps4"></span>
-                        </span>
-                      </span>
-
-                      <span class="heading font-600 cwhite font16 mt-5">
-                        Find and finance the<br />
-                        perfect car online.
-                      </span>
-                    </li>
-                    <!-- =================================  section  =================================   -->
-                    <li class="w-100 px-2">
-                      <span class="postion-relative w-100 is-inline-block mb-1">
-                        <span class="rounded border-white">
-                          <img
-                            src="../assets/img/icon2w.png"
-                            class=""
-                            alt="icon1.png"
-                          />
-                        </span>
-                        <span class="steps postion-absolute">
-                          <span class="steps1"></span>
-                          <span class="steps2"></span>
-                          <span class="steps3"></span>
-                          <span class="steps4"></span>
-                        </span>
-                      </span>
-
-                      <span class="heading font-600 cwhite font16 mt-5">
-                        Delivered to your door<br />
-                        free of charge.
-                      </span>
-                    </li>
-                    <!-- =================================  section  =================================   -->
-                    <li class="w-100 px-2">
-                      <span class="postion-relative w-100 is-inline-block mb-1">
-                        <span class="rounded border-white">
-                          <img
-                            src="../assets/img/icon3w.png"
-                            class=""
-                            alt="icon1.png"
-                          />
-                        </span>
-                      </span>
-
-                      <span class="heading font-600 cwhite font16 mt-5">
-                        Love it. Keep it.<br />
-                        return it.
-                      </span>
-                    </li>
-                  </ul>
+                <div class="work-progress_2 is-d-flex is-align-items-center">
+                  <div class="columns">
+                    <div class="column is-full postion-relative">
+                      <ul
+                        class="clr_gray is-flex-tablet has-text-centered pt-5"
+                      >
+                        <!-- =================================  section  =================================   -->
+                        <li class="">
+                          <span class="postion-relative w-100 is-inline-block">
+                            <span class="rounded border-white">
+                              <img
+                                src="../assets/img/icon1w.png"
+                                class=""
+                                alt="icon1.png"
+                              />
+                            </span>
+                            <div class="steps postion-absolute">
+                              <img src="../assets/img/step1.png" alt="step1" />
+                            </div>
+                          </span>
+                          <div class="work_inner">
+                            <span class="heading cwhite font16 font-600"
+                              >Find and finance the perfect car online.</span
+                            >
+                          </div>
+                        </li>
+                        <!-- =================================  section  =================================   -->
+                        <li class="">
+                          <span class="postion-relative w-100 is-inline-block">
+                            <span class="rounded border-white">
+                              <img
+                                src="../assets/img/icon2w.png"
+                                class=""
+                                alt="icon1.png"
+                              />
+                            </span>
+                            <div class="steps postion-absolute">
+                              <img src="../assets/img/step2.png" alt="step2" />
+                            </div>
+                          </span>
+                          <div class="work_inner">
+                            <span class="heading cwhite font16 font-600"
+                              >Delivere to your door free of charge.</span
+                            >
+                          </div>
+                        </li>
+                        <!-- =================================  section  =================================   -->
+                        <li class="">
+                          <span class="postion-relative w-100 is-inline-block">
+                            <span class="rounded border-white">
+                              <img
+                                src="../assets/img/icon3w.png"
+                                class=""
+                                alt="icon1.png"
+                              />
+                            </span>
+                          </span>
+                          <div class="work_inner">
+                            <span class="heading cwhite font16 font-600"
+                              >Love it. Keep it. Or return it.</span
+                            >
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -198,17 +212,18 @@
         </div>
       </div>
     </section>
+
     <section class="our_ser">
       <div class="columns cl_col mb-0 pb-0 w-100 is-justify-content-center">
         <!-- =================================  section  =================================  -->
-        <div class="column is-one-four-desktop is-full-mobile">
+        <div class="column is-one-four-desktop is-6-mobile">
           <div class="img_bloc is-flex-direction-column w-100">
             <img src="../assets/img/icon6.svg" alt="" class="is-fullwidth" />
             <p class="font-600 clr_gray font14 pt-4 is-block">12.9k miles</p>
           </div>
         </div>
         <!-- =================================  section  =================================  -->
-        <div class="column is-one-four-desktop is-full-mobile">
+        <div class="column is-one-four-desktop is-6-mobile">
           <div class="img_bloc is-flex-direction-column w-100">
             <img src="../assets/img/icon7.svg" alt="" class="is-fullwidth" />
             <p class="font-600 clr_gray font14 pt-4 is-block">{{car_detail.model_year}}</p>
@@ -216,21 +231,21 @@
         </div>
 
         <!-- =================================  section  =================================  -->
-        <div class="column is-one-four-desktop is-full-mobile">
+        <div class="column is-one-four-desktop is-6-mobile">
           <div class="img_bloc is-flex-direction-column w-100">
             <img src="../assets/img/icon8.svg" alt="" class="is-fullwidth" />
-            <p class="font-600 clr_gray font14 pt-4 is-block">{{car_detail.fuel_type}}  </p>
+            <p class="font-600 clr_gray font14 pt-4 is-block">{{car_detail.fuel_type}}</p>
           </div>
         </div>
         <!-- =================================  section  =================================  -->
-        <div class="column is-one-four-desktop is-full-mobile">
+        <div class="column is-one-four-desktop is-6-mobile">
           <div class="img_bloc is-flex-direction-column w-100">
             <img src="../assets/img/icon9.svg" alt="" class="is-fullwidth" />
             <p class="font-600 clr_gray font14 pt-4 is-block">1.8L</p>
           </div>
         </div>
         <!-- =================================  section  =================================  -->
-        <div class="column is-one-four-desktop is-full-mobile">
+        <div class="column is-one-four-desktop is-6-mobile">
           <div class="img_bloc is-flex-direction-column w-100">
             <img src="../assets/img/icon10.svg" alt="" class="is-fullwidth" />
             <p class="font-600 clr_gray font14 pt-4 is-block">{{car_detail.transmission}}</p>
@@ -240,21 +255,21 @@
     </section>
     <section class="v_serives_section">
       <!-- =================================  section  =================================   -->
-      <div class="columns is-vcentered ser_col">
-        <div class="column is-full p-0">
+      <div class="columns is-vcentered ser_col p-0">
+        <div class="column is-full">
           <div
-            class="container_min is-flex is-justify-content-space-between is-align-items-center"
+            class="container_min is-flex-tablet is-justify-content-space-between is-align-items-center"
           >
             <div class="inner-block pl-0">
               <div class="content_block">
                 <h5 class="font-600">About this vehicle</h5>
-                <p class="font14 pt-4 is-inline-block">
-                {{ car_detail.description }}
-                </p>
+
+                   <div class="font14 pt-4 is-inline-block" v-html="car_detail.description" id="div_html" ></div>
+                 
               </div>
             </div>
 
-           <img v-bind:src="car_detail.thumb_url" class="w-100" style="width: 37% !important;"/>
+             <img v-bind:src="car_detail.thumb_url" class="shadow" style="width: 37% !important;"/>
           </div>
         </div>
       </div>
@@ -281,90 +296,22 @@
                       <div class="accordion-body">
                         <div class="accordion-content">
                           <div class="table-container">
-                            <table
-                              class="table w-100 is-striped font14 font-600 clr_gray"
+                            <div
+                              class="table w-100 is-sdliped font14 font-600 clr_gray"
                             >
-                              <tr  v-for="item in specification" :key="item">
-                                <td>{{item}}</td>
-                              </tr>
-                             
-                            </table>
+                              <dl v-for="item in specification" :key="item">
+                                <dd v-if="item">Spec item</dd>
+                                <dd v-if="item">{{item}}</dd>
+                                <dd v-if="item">Spec item</dd>
+                                <dd v-if="item">Spec detail</dd>
+                              </dl>
+                              
+                            </div>
                           </div>
                         </div>
                       </div>
                     </article>
-                    <article class="accordion">
-                      <div class="accordion-header toggle">
-                        <p class="font14 font-600 clr_gray">
-                          Specification
-                          <i class="fas fa-chevron-up is-pulled-right"></i>
-                        </p>
-                      </div>
-                      <div class="accordion-body">
-                        <div class="accordion-content">
-                          <div class="table-container">
-                            <table
-                              class="table w-100 is-striped font14 font-600 clr_gray"
-                            >
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                            </table>
-                          </div>
-                        </div>
-                      </div>
-                    </article>
+                   
                     <article class="accordion">
                       <div class="accordion-header toggle">
                         <p class="font14 font-600 clr_gray">
@@ -375,94 +322,17 @@
                       <div class="accordion-body">
                         <div class="accordion-content">
                           <div class="table-container">
-                            <table
-                              class="table w-100 is-striped font14 font-600 clr_gray"
+                            <div
+                              class="table w-100 is-sdliped font14 font-600 clr_gray"
                             >
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                            </table>
+                              <dl v-for="item in specification" :key="item">
+                                <dd>Spec item</dd>
+                                <dd>{{item}}</dd>
+                                <dd>Spec item</dd>
+                                <dd>{{item}}</dd>
+                              </dl>
+                             
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -477,94 +347,94 @@
                       <div class="accordion-body">
                         <div class="accordion-content">
                           <div class="table-container">
-                            <table
-                              class="table w-100 is-striped font14 font-600 clr_gray"
+                            <div
+                              class="table w-100 is-sdliped font14 font-600 clr_gray"
                             >
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                            </table>
+                              <dl>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                              </dl>
+                              <dl>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                              </dl>
+                              <dl>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                              </dl>
+                              <dl>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                              </dl>
+                              <dl>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                              </dl>
+                              <dl>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                              </dl>
+                              <dl>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                              </dl>
+                              <dl>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                              </dl>
+                              <dl>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                              </dl>
+                              <dl>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                              </dl>
+                              <dl>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                              </dl>
+                              <dl>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                              </dl>
+                              <dl>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                              </dl>
+                              <dl>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                              </dl>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -579,64 +449,94 @@
                       <div class="accordion-body">
                         <div class="accordion-content">
                           <div class="table-container">
-                            <table
-                              class="table w-100 is-striped font14 font-600 clr_gray"
+                            <div
+                              class="table w-100 is-sdliped font14 font-600 clr_gray"
                             >
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                              <tr>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                                <td>Spec item</td>
-                                <td>Spec detail</td>
-                              </tr>
-                            </table>
+                              <dl>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                              </dl>
+                              <dl>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                              </dl>
+                              <dl>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                              </dl>
+                              <dl>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                              </dl>
+                              <dl>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                              </dl>
+                              <dl>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                              </dl>
+                              <dl>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                              </dl>
+                              <dl>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                              </dl>
+                              <dl>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                              </dl>
+                              <dl>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                              </dl>
+                              <dl>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                              </dl>
+                              <dl>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                              </dl>
+                              <dl>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                              </dl>
+                              <dl>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                                <dd>Spec item</dd>
+                                <dd>Spec detail</dd>
+                              </dl>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -660,7 +560,7 @@
         <div class="column is-three-fifths clr_gray">
           <div class="has-background-white bxshadow2 p50 h100">
             <div
-              class="select w-100 is-flex is-justify-content-space-between is-align-items-center"
+              class="select w-100 is-flex-tablet is-justify-content-space-between is-align-items-center"
             >
               <!-- =================================  label  =================================   -->
               <div class="column is-half-desktop">
@@ -677,39 +577,41 @@
               </div>
             </div>
             <!-- =================================  select  =================================   -->
-            <div class="range_value_slider pt50 column is-full">
+            <div class="range-slider pt-5">
               <div
                 class="font12 range_value font-weight-bold clr_gray is-justify-content-space-between is-flex"
               >
-                <label class="font16">Credit term</label>
-                <label class="font16">36 months</label>
+                <label class="">Term</label>
+                <label class="range-slider__value">32 months</label>
               </div>
+
               <input
-                class="slider is-fullwidth w-100 mt-2"
-                step="1"
-                min="0"
-                max="100"
-                value="50"
+                class="range-slider__range"
                 type="range"
+                value="100"
+                min="0"
+                max="1000"
               />
             </div>
+
+            <div class="range-slider pt-5">
+              <div
+                class="font12 range_value font-weight-bold clr_gray is-justify-content-space-between is-flex"
+              >
+                <label class="">Deposit</label>
+                <label class="range-slider__value">£04,000</label>
+              </div>
+
+              <input
+                class="range-slider__range"
+                type="range"
+                value="100"
+                min="0"
+                max="1000"
+              />
+            </div>
+
             <!-- =================================  select  =================================   -->
-            <div class="range_value_slider pt50 column is-full">
-              <div
-                class="font12 range_value font-weight-bold clr_gray is-justify-content-space-between is-flex"
-              >
-                <label class="font16">Mileage</label>
-                <label class="font16">£4000</label>
-              </div>
-              <input
-                class="slider is-fullwidth w-100 mt-2"
-                step="1"
-                min="0"
-                max="100"
-                value="50"
-                type="range"
-              />
-            </div>
           </div>
         </div>
 
@@ -743,11 +645,7 @@
         <div class="column is-3-desktop column is-6-tablet column is-12-mobile">
           <div class="card">
             <div class="postion-relative">
-              <img
-                src="../assets/img/car1.jpg"
-                class="w-100"
-                alt="Toyota C-HR"
-              />
+              <img src="../assets/img/car1.jpg" class="w-100" alt="Toyota C-HR" />
             </div>
             <div class="card_content">
               <div
@@ -756,7 +654,7 @@
                 <h5
                   class="menu-label font-weight-bold font16 has-text-left postion-relative mb-0 is-capitalized"
                 >
-                  {{ car_detail.make }} {{ car_detail.model }}
+                  Toyota C-HR
                 </h5>
                 <img src="../assets/img/icon5.png" alt="heart" />
               </div>
@@ -774,10 +672,10 @@
             <div class="card-footer">
               <ul class="is-flex is-justify-content-space-between w-100">
                 <li class="font12 font-weight-bold">12.9k</li>
-                <li class="font12 font-weight-bold">{{car_detail.model_year}}</li>
-                <li class="font12 font-weight-bold">{{car_detail.fuel_type}}</li>
+                <li class="font12 font-weight-bold">2018</li>
+                <li class="font12 font-weight-bold">Hybrid</li>
                 <li class="font12 font-weight-bold">1.8L</li>
-                <li class="font12 font-weight-bold">{{car_detail.transmission}}</li>
+                <li class="font12 font-weight-bold">Automatic</li>
               </ul>
             </div>
           </div>
@@ -787,11 +685,7 @@
         <div class="column is-3-desktop column is-6-tablet column is-12-mobile">
           <div class="card">
             <div class="postion-relative">
-              <img
-                src="../assets/img/car1.jpg"
-                class="w-100"
-                alt="Toyota C-HR"
-              />
+              <img src="../assets/img/car1.jpg" class="w-100" alt="Toyota C-HR" />
               <h5
                 class="cwhite postion-absolute overlay-text font14 font-weight-bold"
               >
@@ -823,10 +717,10 @@
             <div class="card-footer">
               <ul class="is-flex is-justify-content-space-between w-100">
                 <li class="font12 font-weight-bold">12.9k</li>
-                <li class="font12 font-weight-bold">{{car_detail.model_year}}</li>
-                <li class="font12 font-weight-bold">{{car_detail.fuel_type}}</li>
+                <li class="font12 font-weight-bold">2018</li>
+                <li class="font12 font-weight-bold">Hybrid</li>
                 <li class="font12 font-weight-bold">1.8L</li>
-                <li class="font12 font-weight-bold">{{car_detail.transmission}}</li>
+                <li class="font12 font-weight-bold">Automatic</li>
               </ul>
             </div>
           </div>
@@ -835,11 +729,7 @@
         <div class="column is-3-desktop column is-6-tablet column is-12-mobile">
           <div class="card">
             <div class="postion-relative">
-              <img
-                src="../assets/img/car1.jpg"
-                class="w-100"
-                alt="Toyota C-HR"
-              />
+              <img src="../assets/img/car1.jpg" class="w-100" alt="Toyota C-HR" />
               <h5
                 class="cwhite postion-absolute overlay-text font14 font-weight-bold"
               >
@@ -871,10 +761,10 @@
             <div class="card-footer">
               <ul class="is-flex is-justify-content-space-between w-100">
                 <li class="font12 font-weight-bold">12.9k</li>
-                <li class="font12 font-weight-bold">{{car_detail.model_year}}</li>
-                <li class="font12 font-weight-bold">{{car_detail.fuel_type}}</li>
+                <li class="font12 font-weight-bold">2018</li>
+                <li class="font12 font-weight-bold">Hybrid</li>
                 <li class="font12 font-weight-bold">1.8L</li>
-                <li class="font12 font-weight-bold">{{car_detail.transmission}}</li>
+                <li class="font12 font-weight-bold">Automatic</li>
               </ul>
             </div>
           </div>
@@ -883,11 +773,7 @@
         <div class="column is-3-desktop column is-6-tablet column is-12-mobile">
           <div class="card">
             <div class="postion-relative">
-              <img
-                src="../assets/img/car1.jpg"
-                class="w-100"
-                alt="Toyota C-HR"
-              />
+              <img src="../assets/img/car1.jpg" class="w-100" alt="Toyota C-HR" />
               <h5
                 class="cwhite postion-absolute overlay-text font14 font-weight-bold"
               >
@@ -919,10 +805,10 @@
             <div class="card-footer">
               <ul class="is-flex is-justify-content-space-between w-100">
                 <li class="font12 font-weight-bold">12.9k</li>
-                <li class="font12 font-weight-bold">{{car_detail.model_year}}</li>
-                <li class="font12 font-weight-bold">{{car_detail.fuel_type}}</li>
+                <li class="font12 font-weight-bold">2018</li>
+                <li class="font12 font-weight-bold">Hybrid</li>
                 <li class="font12 font-weight-bold">1.8L</li>
-                <li class="font12 font-weight-bold">{{car_detail.transmission}}</li>
+                <li class="font12 font-weight-bold">Automatic</li>
               </ul>
             </div>
           </div>
@@ -951,7 +837,7 @@
         </div>
       </div>
     </section>
-    <FooterNav/>
+    <FooterNav />
   </div>
 </template>
 
@@ -960,30 +846,30 @@
 import "vue-slick-carousel/dist/vue-slick-carousel.css";
 // optional style for arrows & dots
 import "vue-slick-carousel/dist/vue-slick-carousel-theme.css";
-import {HTTP} from '../http-common'
-import AppNavigation from '@/components/AppNavigation';
-import FooterNav from '@/components/FooterNav';
-import VueToast from 'vue-toast-notification';
+import { HTTP } from "../http-common";
+import AppNavigation from "@/components/AppNavigation";
+import FooterNav from "@/components/FooterNav";
+import VueToast from "vue-toast-notification";
 // Import one of the available themes
 //import 'vue-toast-notification/dist/theme-default.css';
-import 'vue-toast-notification/dist/theme-sugar.css';
-import Vue from 'vue';
-import { Carousel, Slide } from 'vue-carousel';
+import "vue-toast-notification/dist/theme-sugar.css";
+import Vue from "vue";
+import { Carousel, Slide } from "vue-carousel";
 
-import VueCarousel from 'vue-carousel';
- 
+import VueCarousel from "vue-carousel";
+
 Vue.use(VueCarousel);
 Vue.use(VueToast);
 
 export default {
   name: "vehicle",
-  components: { 
-    //VueSlickCarousel ,  
+  components: {
+    //VueSlickCarousel ,
     AppNavigation,
     FooterNav,
     Carousel,
-    Slide
-    },
+    Slide,
+  },
   data: () => ({
     settings: {
       dots: true,
@@ -995,99 +881,143 @@ export default {
       slidesToShow: 2,
       slidesToScroll: 1,
     },
-    car_detail:[],
-    specification:[],
-     IsLoading: true,
-     term_range:48,
-     monthly_payment:'',
+    car_detail: [],
+    specification: [],
+    IsLoading: true,
+    term_range: 48,
+    monthly_payment: "",
+    carimages:[]
   }),
 
   methods: {
-
-    getMyDeal(){
-        this.$router.push("/application/"+this.$route.params.car_id) 
-
+    getMyDeal() {
+      this.$router.push("/application/" + this.$route.params.car_id);
     },
     GetCarById(car_id) {
-      var cardId =  car_id.split('_')[0];
+      var cardId = car_id.split("_")[0];
 
-        var postData = {
-                car_id: car_id,
-                loan: {
-                        deposit: 9000,
-                        mileage:25000,
-                        product: 'new_car_pcp',
-                        term:this.term_range,
-                },
-                rating: "excellent"
-           };
-      HTTP.post("api/v2/cars/view/"+cardId,postData).then((response) => {
+      var postData = {
+        car_id: car_id,
+        loan: {
+          deposit: 9000,
+          mileage: 25000,
+          product: "new_car_pcp",
+          term: this.term_range,
+        },
+        rating: "excellent",
+      };
+      HTTP.post("api/v2/cars/view/" + cardId, postData).then((response) => {
         if (response.status == 200) {
           this.car_detail = response.data;
-          this.specification =  this.car_detail.standard_option.split(",");
+          this.specification = this.car_detail.standard_option.split(",");
           this.IsLoading = false;
+                var img =  response.data.images;
+               
+              for(let i =0 ; i < img.length; i++){
+                     console.log(img[i].path)
+                      if(this.checkImg(img[i].path)){
+                        this.carimages.push(img[i].path)
+                      }else{
+                            this.carimages.push(this.car_detail.thumb_url)
+                      }
+                  
+                    
+              }
+
+     console.log(this.carimages)
         } else {
           this.IsLoading = false;
         }
-
       });
     },
 
-     GetCarMonthlyPayment(car_id) {
-      var cardId =  car_id.split('_')[0];
-      var car_type =  car_id.split('_')[1];
+    checkImg(url, callback, timeout) {
+            timeout = timeout || 5000;
+            var timedOut = false, timer;
+            var img = new Image();
+            img.onerror = img.onabort = function() {
+                if (!timedOut) {
+                    clearTimeout(timer);
+                   return false;
+                }
+            };
+            img.onload = function() {
+                if (!timedOut) {
+                    clearTimeout(timer);
+                   return true;
+                }
+            };
+            img.src = url;
+            timer = setTimeout(function() {
+                timedOut = true;
+               // callback(url, "timeout");
+               console.log(url)
+            }, timeout); 
+  },
 
-        var postData = {
-                  car_type: car_type,
-                  deposit: 9000,
-                  id:cardId,
-                  mileage:25000,
-                  product: 'new_car_pcp',
-                  term:this.term_range,
-                  rating: "excellent"
-           };
+    record(url, result) {
 
-     
-      HTTP.post("api/v2/cars/price/"+cardId,postData).then((response) => {
-        console.log(response.data);
-        if (response.status == 200) {
-             console.log("!he")
-             this.monthly_payment = response.data.monthly_payment
-             
-        } else {
-            
-          this.IsLoading = false;
-        }
-
-      }).catch(err => {
-           if (err.response && err.response.status === 422) {
-           if (err.response.data.errors) {
-              console.log('First name errors: '+ err.response.data.errors.join(','));
-              Vue.$toast.open({
-                    message:  err.response.data.errors.join(','),
-                    type: 'error',
-                    // all of other options may go here
-                });
-           } 
-
-           // and so on
-
-       }
-      })
+       console.log(url, result)
+     }   ,
    
+
+    GetCarMonthlyPayment(car_id) {
+      var cardId = car_id.split("_")[0];
+      var car_type = car_id.split("_")[1];
+
+      var postData = {
+        car_type: car_type,
+        deposit: 9000,
+        id: cardId,
+        mileage: 25000,
+        product: "new_car_pcp",
+        term: this.term_range,
+        rating: "excellent",
+      };
+
+      HTTP.post("api/v2/cars/price/" + cardId, postData)
+        .then((response) => {
+          console.log(response.data);
+          if (response.status == 200) {
+            console.log("!he");
+            this.monthly_payment = response.data.monthly_payment;
+          } else {
+            this.IsLoading = false;
+          }
+        })
+        .catch((err) => {
+          if (err.response && err.response.status === 422) {
+            if (err.response.data.errors) {
+              console.log(
+                "First name errors: " + err.response.data.errors.join(",")
+              );
+              Vue.$toast.open({
+                message: err.response.data.errors.join(","),
+                type: "error",
+                // all of other options may go here
+              });
+            }
+
+            // and so on
+          }
+        });
     },
 
-    changetermrange(){
-        this.GetCarMonthlyPayment(this.$route.params.car_id)
-    }
+    changetermrange() {
+      this.GetCarMonthlyPayment(this.$route.params.car_id);
+    },
 
- 
+   
   },
 
   mounted() {
-       console.log(this.$route.params.car_id);
+    console.log(this.$route.params.car_id);
     this.GetCarById(this.$route.params.car_id);
     this.GetCarMonthlyPayment(this.$route.params.car_id);
+    
+  
+
+      
   },
 };
 </script> 

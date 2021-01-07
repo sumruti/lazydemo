@@ -372,9 +372,9 @@ export default {
 
         search(){
              if(this.make && this.modal && this.payment){
-                    // window.location.href = "/cars?make="+this.make+'&modal='+this.modal+'&payment='+this.payment;
+                   this.$router.push('/cars?make='+this.make+'&modal='+this.modal+'&payment='+this.payment) 
              }
-             this.$router.push('/cars?make='+this.make+'&modal='+this.modal+'&payment='+this.payment) 
+             
            
            
 
