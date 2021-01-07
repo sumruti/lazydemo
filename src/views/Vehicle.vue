@@ -40,9 +40,9 @@
               >
                 <img src="../assets/img/icon5.png" class="pr-6" alt="heart" />
                 <div class="clr_gray">
-                  <h1 class="font-600">Toyota C-HR</h1>
+                  <h1 class="font-600">   {{ car_detail.make }} {{ car_detail.model }}</h1>
                   <span class="ve_title is-block pt-5">
-                    1.8 Hybrid Dynamic 5dr CVT</span
+                     {{ car_detail.derivative }}    {{ car_detail.colour_spec }}</span
                   >
                 </div>
               </div>
@@ -74,6 +74,8 @@
                         max="48"
                         step="1"
                         @change="changetermrange()"
+
+                        style="background: linear-gradient(90deg, rgb(255, 35, 183) 38.9333%, rgb(215, 220, 223) 39.0333%);"
                     />
                   </div>
                   <div class="range-slider pt-5">
@@ -81,14 +83,16 @@
                       class="font12 range_value font-weight-bold clr_gray is-justify-content-space-between is-flex"
                     >
                       <label class="">Deposit</label>
-                      <label class="range-slider__value">£4,000</label>
+                      <label class="range-slider__value">£{{deposite_range}}</label>
                     </div>
                     <input
                       class="range-slider__range"
-                      type="range"
-                      value="1000"
-                      min="0"
-                      max="15000"
+                       v-model="deposite_range"
+                        type="range"
+                        min="1"
+                        max="10000"
+                        step="1"
+                        @change="changeDeposite()"
                     />
                   </div>
                   <div class="is-hidden-tablet">
@@ -109,7 +113,7 @@
             <div class="column is-half is-hidden-mobile">
               <h5 class="font18 is-flex is-align-items-center">
                 <img src="../assets/img/icon5.png" alt="heart" />
-                <strong class="cwhite">Toyota C-HR 1.8</strong> Hybrid Dynamic
+                <strong class="cwhite">{{ car_detail.make }} {{ car_detail.model }}</strong> Hybrid Dynamic
                 5dr CVT
               </h5>
             </div>
@@ -599,10 +603,11 @@
                 class="font12 range_value font-weight-bold clr_gray is-justify-content-space-between is-flex"
               >
                 <label class="">Deposit</label>
-                <label class="range-slider__value">£04,000</label>
+                <label class="range-slider__value">£4,000</label>
               </div>
 
               <input
+                v-model="terms_slider"
                 class="range-slider__range"
                 type="range"
                 value="100"
@@ -886,7 +891,9 @@ export default {
     IsLoading: true,
     term_range: 48,
     monthly_payment: "",
-    carimages:[]
+    carimages:[],
+    deposite_range:6000,
+    terms_slider:"1000"
   }),
 
   methods: {
@@ -967,7 +974,7 @@ export default {
 
       var postData = {
         car_type: car_type,
-        deposit: 9000,
+        deposit: this.deposite_range,
         id: cardId,
         mileage: 25000,
         product: "new_car_pcp",
@@ -1006,6 +1013,27 @@ export default {
     changetermrange() {
       this.GetCarMonthlyPayment(this.$route.params.car_id);
     },
+    
+     changeDeposite() {
+      this.GetCarMonthlyPayment(this.$route.params.car_id);
+    },
+
+     applyFill(slider) {
+          // Let's turn our value into a percentage to figure out how far it is in between the min and max of our input
+          const percentage = 100*(slider.value-slider.min)/(slider.max-slider.min);
+
+          const settings={
+            fill: '#FF23B7',
+            background: '#d7dcdf'
+          }
+
+          // now we'll create a linear gradient that separates at the above point
+          // Our background color will change here
+          const bg = `linear-gradient(90deg, ${settings.fill} ${percentage}%, ${settings.background} ${percentage+0.1}%)`;
+          slider.style.background = bg;
+      } 
+
+
 
    
   },
@@ -1014,6 +1042,26 @@ export default {
     console.log(this.$route.params.car_id);
     this.GetCarById(this.$route.params.car_id);
     this.GetCarMonthlyPayment(this.$route.params.car_id);
+
+    const sliders = document.querySelectorAll('.range-slider');
+
+      // Iterate through that list of sliders
+      // ... this call goes through our array of sliders [slider1,slider2,slider3] and inserts them one-by-one into the code block below with the variable name (slider). We can then access each of wthem by calling slider
+      Array.prototype.forEach.call(sliders,(slider)=>{
+        // Look inside our slider for our input add an event listener
+      //   ... the input inside addEventListener() is looking for the input action, we could change it to something like change
+        slider.querySelector('input').addEventListener('input', (event)=>{
+          // 1. apply our value to the span
+          //slider.querySelector('.range-slider__value').innerHTML = event.target.value;
+          // 2. apply our fill to the input
+          this.applyFill(event.target);
+        });
+        // Don't wait for the listener, apply it now!
+        this.applyFill(slider.querySelector('input'));
+      });
+
+
+
     
   
 
