@@ -737,7 +737,7 @@ aside hr {
 .overlay-text {
   background: #404040;
   line-height: 30px;
-  padding: 4px 13px;
+  padding: 7px 25px 16px 25px;
   left: 0;
   bottom: 7px;
 }
@@ -1576,7 +1576,6 @@ label, input {
 
   dd {
     &:nth-child(2), &:nth-child(4) {
-      display: flex;
       justify-content: flex-end;
     }
 
@@ -3652,4 +3651,9 @@ span.discp {
     max-width: 100%;
     padding: 0 !important;
   }
+}
+
+.column.is-4, .column.is-4-tablet {
+    flex: none;
+    width: 100%;
 }
