@@ -620,7 +620,7 @@
                   v-model="deposit_"
                   type="range"
                   min="1"
-                  max="60000"
+                  max="2000"
                   step="1"
                   @change="changeDeposit_by_rating()"
               />
@@ -637,10 +637,10 @@
               >You could borrow up to</label
             >
             <h2 class="is-inline-block font-600 w-100 clr-pink pt-2">
-              £{{ Math.floor(finance_res.loan)}}
+              £{{ Math.floor(finance_res.loan_amount)}}
             </h2>
             <p class="font12 clr_gray font-weight-normal">
-               Based on <span style="text-transform: capitalize;">{{rating_}}</span> credit rating you can borrow approximately £{{ Math.floor(finance_res.loan)}}. Representative APR: : {{finance_res.apr}}%, Fixed Rate(Per Annum):  {{finance_res.flat_rate}}%, Cost of Credit: £{{finance_res.cost_of_credit}}, Total Repayable: £{{finance_res.total_repayable}}.
+               Based on <span style="text-transform: capitalize;">{{rating_}}</span> credit rating you can borrow approximately £{{ Math.floor(finance_res.loan_amount)}}. Representative APR: : {{finance_res.apr}}%, Fixed Rate(Per Annum):  {{finance_res.flat_rate}}%, Cost of Credit: £{{finance_res.cost_of_credit}}, Total Repayable: £{{finance_res.total_repayable}}.
             </p>
             <a @click="getMyDeal()" href="#" class="bg-pink cwhite is-inline-block mt-5 btn"
               >Get my deal</a
@@ -902,10 +902,10 @@ export default {
     carimages:[],
     filters_finance:[],
     deposite_range:6000,
-    terms_slider:"1000",
+    terms_slider:1000,
     rating_:'fair',
-    deposit_:'6000',
-    term_:'36',
+    deposit_:1000,
+    term_:36,
     finance_res:[]
   }),
 
@@ -1061,32 +1061,30 @@ export default {
     },
 
     changeTerm_by_rating(){
-     this.GetCarMonthlyPayment_by_rating(this.$route.params.car_id)
+     this.GetCarMonthlyPayment_by_rating()
     },
 
     changeDeposit_by_rating(){
-      this.GetCarMonthlyPayment_by_rating(this.$route.params.car_id)
+      this.GetCarMonthlyPayment_by_rating()
     },
 
-     GetCarMonthlyPayment_by_rating(car_id) {
-      var cardId = car_id.split("_")[0];
-      var car_type = car_id.split("_")[1];
+    getRatingFilter(e){
+           this.rating_ = e.target.value;
+            this.GetCarMonthlyPayment_by_rating()
+    },
 
-      var postData = {
-        car_type: car_type,
-        deposit: this.deposit_,
-        id: cardId,
-        mileage: 25000,
-        product: "new_car_pcp",
-        term: this.term_,
-        rating: this.rating_,
+     GetCarMonthlyPayment_by_rating() {
+       var postData = {
+        monthly_budget: this.deposit_,
+        loan_term: this.term_,
+        self_rating: this.rating_
       };
 
-      HTTP.post("api/v2/cars/price/" + cardId, postData)
+      HTTP.post("/api/v2/finance/get-estimate", postData)
         .then((response) => {
-          console.log(response.data);
           if (response.status == 200) {
-            this.finance_res = response.data;
+             this.finance_res = response.data;
+             this.IsLoading = false
           } else {
             this.IsLoading = false;
           }
@@ -1118,7 +1116,7 @@ export default {
     this.GetCarById(this.$route.params.car_id);
     this.GetFiltersettings();
     this.GetCarMonthlyPayment(this.$route.params.car_id);
-    this.GetCarMonthlyPayment_by_rating(this.$route.params.car_id)
+    this.GetCarMonthlyPayment_by_rating()
 
     const sliders = document.querySelectorAll('.range-slider');
 
