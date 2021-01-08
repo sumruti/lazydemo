@@ -271,7 +271,7 @@ export default {
       rating_:'fair',
       make_:'',
       term_:'60',
-      deposit_:'17000',
+      deposit_:'2000',
       finance_res:[],
       IsLoading:true
     } 
@@ -316,7 +316,7 @@ export default {
      GetCarMonthlyPayment() {
 
       var postData = {
-        amount: this.deposit_,
+        monthly_budget: this.deposit_,
         loan_term: this.term_,
         self_rating: this.rating_
       };
