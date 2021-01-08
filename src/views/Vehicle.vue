@@ -639,8 +639,7 @@
             <h2 class="is-inline-block font-600 w-100 clr-pink pt-2">
               £{{ Math.floor(finance_res.loan_amount)}}
             </h2>
-            <p class="font12 clr_gray font-weight-normal">
-Based on <span style="text-transform: capitalize;">{{rating_}}</span> credit rating you can borrow approximately £{{finance_res.loan_amount}}. Representative APR: : {{finance_res.apr}}%, Fixed Rate(Per Annum):  {{finance_res.flat_rate}}%, Cost of Credit: £{{finance_res.total_cost}}, Total Repayable: £{{finance_res.total_payable}}.            </p>
+            <p class="font12 clr_gray font-weight-normal"> Based on <span style="text-transform: capitalize;">{{rating_}}</span> credit rating you can borrow approximately £{{finance_res.loan_amount}}. Representative APR: : {{finance_res.apr}}%, Fixed Rate(Per Annum):  {{finance_res.flat_rate}}%, Cost of Credit: £{{finance_res.total_cost}}, Total Repayable: £{{finance_res.total_payable}}.            </p>
             <a @click="getMyDeal()" href="#" class="bg-pink cwhite is-inline-block mt-5 btn"
               >Get my deal</a
             >
@@ -1134,6 +1133,10 @@ export default {
         this.applyFill(slider.querySelector('input'));
       });
 
+
+
+    
+  
 
       
   },

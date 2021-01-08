@@ -109,7 +109,7 @@
                     <ul class="help_tabs">
 
                          <li v-for="(item, index) in faq" :key="index">
-                            <a to="#" @click="getQuite(item)">
+                            <a to="#" @click="getQuite(item, index)">
                                 {{item}}&nbsp; <span><i class="fas fa-arrow-right"></i></span>
                             </a>
                         </li>
@@ -258,10 +258,11 @@ export default {
             return [].concat.apply([], stringArr);
         },
 
-        getQuite(item){
+        getQuite(item, index){
 
-                console.log(item.split(' ').join('-'))
-                this.$router.push('/help-and-advice-content/'+item.split(' ').join('-')) 
+               
+                var page = index + 1;
+                this.$router.push('/help-and-advice-content/'+page) 
         }
 
         

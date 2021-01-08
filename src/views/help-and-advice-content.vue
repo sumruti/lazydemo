@@ -22,22 +22,11 @@
                   </div>
                   <div class="margintop60 pb-4">
                      <h3 class="common-heading clr_gray">{{title}}</h3>
-                     <p class="font18 clr_gray pt-4">
+                    <!-- <p class="font18 clr_gray pt-4">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                     </p>
+                     </p>-->
                      <div class="font14 clr_gray">
-                        <p class="font14  pt-4">
-                           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea 
-                        </p>
-                        <p class="font14  pt-4">
-                           commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et 
-                        </p>
-                        <p class="font14  pt-4">
-                           dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                        </p>
-                        <p class="font14 pt-4">
-                           dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                        </p>
+                       <div v-html="content_html" id="div_html_1" ></div>
                      </div>
                   </div>
                </div>
@@ -143,6 +132,8 @@
             </div>
          </div>
       </section>
+
+      <div v-html="content" id="div_html" ></div>
  
         <FooterNav/>
   </div>
@@ -163,9 +154,10 @@ export default {
   },
   data() {
     return {
-      IsLoading: false,
+      IsLoading: true,
       content:'',
-      title:''
+      title:'',
+      content_html:''
     };
   },
 
@@ -180,11 +172,18 @@ export default {
                             
                                 this.content = await response.data[0].content.rendered;
 
+                                  
+
+
 
 
                                 setTimeout(async () => {
-                                        this.faq= await this.stringBuilder(document.querySelector('.s-article__pink-list'));
-                                        document.getElementById("div_html").style.display = "none";
+                                       // this.faq= await this.stringBuilder(document.querySelector('.s-article__pink-list'));
+                                       var content_html = await document.getElementById('fair_'+this.$route.params.id);
+                                       this.content_html = content_html.innerHTML;
+                                       this.title = content_html.getElementsByTagName('h2')[0].innerText;
+                                       document.getElementById("div_html").style.display = "none";
+                                        
                                         this.IsLoading = false;
                                 },3000);
 
@@ -203,19 +202,7 @@ export default {
                 })
         },
 
-        stringBuilder(ul, prefix) {
-            prefix = prefix || '';
-            var arr = Array.prototype.slice.call(ul.children);
-           
-            var stringArr = arr.map(function (li) {
-                if (li.children.length > 1) {
-                   // return stringBuilder(li.querySelector('ul'), prefix + li.querySelector('a').textContent + '/');
-                } else {
-                    return prefix + li.querySelector('a').textContent;
-                }
-            });
-            return [].concat.apply([], stringArr);
-        }
+       
 
         
 
@@ -224,7 +211,7 @@ export default {
  
   mounted() {
         this.GetFiltersettings();
-        this.title = this.$route.params.id.split("-").join(' ');
+       
         window.scrollTo(0,0);
         
 
