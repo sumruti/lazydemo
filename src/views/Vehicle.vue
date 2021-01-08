@@ -113,8 +113,7 @@
             <div class="column is-half is-hidden-mobile">
               <h5 class="font18 is-flex is-align-items-center">
                 <img src="../assets/img/icon5.png" alt="heart" />
-                <strong class="cwhite">{{ car_detail.make }} {{ car_detail.model }}</strong> Hybrid Dynamic
-                5dr CVT
+                <strong class="cwhite">{{ car_detail.make }} {{ car_detail.model }}</strong>
               </h5>
             </div>
 
@@ -573,11 +572,19 @@
               <!-- =================================  select  =================================   -->
               <div class="column is-half-desktop">
                 <select
-                  class="w-100 font16 font-weight-normal font16 pl-0 rounde-0 clr_gray"
-                >
-                  <option>Excellent</option>
-                  <option>With options</option>
-                </select>
+                    class="w-100 font16 font-weight-normal font16 pl-0 rounde-0 clr_gray"
+                    v-model="rating_"
+                    @change="getRatingFilter($event)"
+                    >
+                    <option value="">Choose a rating</option>
+                    <option
+                        v-for="(option, name) in filters_finance.credit_rating"
+                        :value="name"
+                        :key="name"
+                    >
+                        {{ option }}
+                    </option>
+                  </select>
               </div>
             </div>
             <!-- =================================  select  =================================   -->
@@ -586,15 +593,17 @@
                 class="font12 range_value font-weight-bold clr_gray is-justify-content-space-between is-flex"
               >
                 <label class="">Term</label>
-                <label class="range-slider__value">32 months</label>
+                <label class="range-slider__value">{{term_}} months</label>
               </div>
 
               <input
-                class="range-slider__range"
-                type="range"
-                value="100"
-                min="0"
-                max="1000"
+                      class="range-slider__range"
+                      v-model="term_"
+                      type="range"
+                      min="1"
+                      max="60"
+                      step="1"
+                      @change="changeTerm_by_rating()"
               />
             </div>
 
@@ -603,16 +612,17 @@
                 class="font12 range_value font-weight-bold clr_gray is-justify-content-space-between is-flex"
               >
                 <label class="">Deposit</label>
-                <label class="range-slider__value">£4,000</label>
+                <label class="range-slider__value">£{{deposit_}}</label>
               </div>
 
               <input
-                v-model="terms_slider"
-                class="range-slider__range"
-                type="range"
-                value="100"
-                min="0"
-                max="1000"
+                  class="range-slider__range"
+                  v-model="deposit_"
+                  type="range"
+                  min="1"
+                  max="60000"
+                  step="1"
+                  @change="changeDeposit_by_rating()"
               />
             </div>
 
@@ -627,14 +637,12 @@
               >You could borrow up to</label
             >
             <h2 class="is-inline-block font-600 w-100 clr-pink pt-2">
-              £481.92
+              £{{ Math.floor(finance_res.loan)}}
             </h2>
             <p class="font12 clr_gray font-weight-normal">
-              Based on Excellent credit rating you can borrow approximately
-              £41,239. Representative APR: 5.91%, Fixed Rate(Per Annum): 3.04%,
-              Cost of Credit: £3,761, Total Repayable: £45,000.
+               Based on <span style="text-transform: capitalize;">{{rating_}}</span> credit rating you can borrow approximately £{{ Math.floor(finance_res.loan)}}. Representative APR: : {{finance_res.apr}}%, Fixed Rate(Per Annum):  {{finance_res.flat_rate}}%, Cost of Credit: £{{finance_res.cost_of_credit}}, Total Repayable: £{{finance_res.total_repayable}}.
             </p>
-            <a href="#" class="bg-pink cwhite is-inline-block mt-5 btn"
+            <a @click="getMyDeal()" href="#" class="bg-pink cwhite is-inline-block mt-5 btn"
               >Get my deal</a
             >
           </div>
@@ -892,8 +900,13 @@ export default {
     term_range: 48,
     monthly_payment: "",
     carimages:[],
+    filters_finance:[],
     deposite_range:6000,
-    terms_slider:"1000"
+    terms_slider:"1000",
+    rating_:'fair',
+    deposit_:'6000',
+    term_:'36',
+    finance_res:[]
   }),
 
   methods: {
@@ -1031,7 +1044,70 @@ export default {
           // Our background color will change here
           const bg = `linear-gradient(90deg, ${settings.fill} ${percentage}%, ${settings.background} ${percentage+0.1}%)`;
           slider.style.background = bg;
-      } 
+      },
+      
+    GetFiltersettings() {
+      HTTP.get("api/v2/app/settings").then((response) => {
+        console.log(response.data.fields.stocks.makes);
+        if (response.status == 200) {
+          this.filters_finance= response.data.fields.finance;
+          this.IsLoading = false
+        } else {
+          this.IsLoading = false;
+        }
+
+        // commit('SET_CARS', response.data)
+      });
+    },
+
+    changeTerm_by_rating(){
+     this.GetCarMonthlyPayment_by_rating(this.$route.params.car_id)
+    },
+
+    changeDeposit_by_rating(){
+      this.GetCarMonthlyPayment_by_rating(this.$route.params.car_id)
+    },
+
+     GetCarMonthlyPayment_by_rating(car_id) {
+      var cardId = car_id.split("_")[0];
+      var car_type = car_id.split("_")[1];
+
+      var postData = {
+        car_type: car_type,
+        deposit: this.deposit_,
+        id: cardId,
+        mileage: 25000,
+        product: "new_car_pcp",
+        term: this.term_,
+        rating: this.rating_,
+      };
+
+      HTTP.post("api/v2/cars/price/" + cardId, postData)
+        .then((response) => {
+          console.log(response.data);
+          if (response.status == 200) {
+            this.finance_res = response.data;
+          } else {
+            this.IsLoading = false;
+          }
+        })
+        .catch((err) => {
+          if (err.response && err.response.status === 422) {
+            if (err.response.data.errors) {
+              console.log(
+                "First name errors: " + err.response.data.errors.join(",")
+              );
+              Vue.$toast.open({
+                message: err.response.data.errors.join(","),
+                type: "error",
+                // all of other options may go here
+              });
+            }
+
+            // and so on
+          }
+        });
+    },
 
 
 
@@ -1039,9 +1115,10 @@ export default {
   },
 
   mounted() {
-    console.log(this.$route.params.car_id);
     this.GetCarById(this.$route.params.car_id);
+    this.GetFiltersettings();
     this.GetCarMonthlyPayment(this.$route.params.car_id);
+    this.GetCarMonthlyPayment_by_rating(this.$route.params.car_id)
 
     const sliders = document.querySelectorAll('.range-slider');
 

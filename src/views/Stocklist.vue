@@ -1,6 +1,6 @@
 <template>
   <div class="stocklist">
-     <app-navigation></app-navigation>
+    <app-navigation></app-navigation>
     <div class="loder_main" v-if="IsLoading">
       <div class="loader_"></div>
     </div>
@@ -17,7 +17,12 @@
             <h5
               class="menu-label font-600 clr_gray font16 has-text-left postion-relative mb-0 is-capitalized"
             >
-              Your finance details <span @click="reset()" style="float: right;color: #ff23b7;cursor: pointer;">Reset</span>
+              Your finance details
+              <span
+                @click="reset()"
+                style="float: right; color: #ff23b7; cursor: pointer"
+                >Reset</span
+              >
             </h5>
             <div class="aside_wrapper pt-5">
               <h6 class="is-capitalized mb-3 header-inner font-600">
@@ -181,16 +186,30 @@
             </div>
             <div class="control">
               <div class="select w-100">
-                <select class="w-100 font14 clr_gray pr-0"  v-model="make" @change="getMakeFilter($event)">
-                   <option value="">Choose a make</option>
-                   <option value="">Any</option>
-                   <option v-for="(option, name) in filters_make" :value="name" :key="option">{{ option }}</option>
+                <select
+                  class="w-100 font14 clr_gray pr-0"
+                  v-model="make"
+                  @change="getMakeFilter($event)"
+                >
+                  <option value="">Choose a make</option>
+                  <option value="">Any</option>
+                  <option
+                    v-for="(option, name) in filters_make"
+                    :value="name"
+                    :key="option"
+                  >
+                    {{ option }}
+                  </option>
                 </select>
               </div>
             </div>
             <div class="control">
               <div class="select w-100">
-                <select class="w-100 font14 clr_gray pr-0 "  v-model="modal" @change="getModalFilter($event)">
+                <select
+                  class="w-100 font14 clr_gray pr-0"
+                  v-model="modal"
+                  @change="getModalFilter($event)"
+                >
                   <option value="">Modal</option>
                   <option value="">Any</option>
                 </select>
@@ -198,19 +217,39 @@
             </div>
             <div class="control">
               <div class="select w-100">
-                <select class="w-100 font14 clr_gray pr-0" v-model="mileage_key" @change="getMilageFilter($event)">
+                <select
+                  class="w-100 font14 clr_gray pr-0"
+                  v-model="mileage_key"
+                  @change="getMilageFilter($event)"
+                >
                   <option value="">Mileage</option>
                   <option value="">Any</option>
-                  <option v-for="(option, name) in filtersmileage" :value="name" :key="option">{{ option }}</option>
+                  <option
+                    v-for="(option, name) in filtersmileage"
+                    :value="name"
+                    :key="option"
+                  >
+                    {{ option }}
+                  </option>
                 </select>
               </div>
             </div>
             <div class="control">
               <div class="select w-100">
-                <select class="w-100 font14 clr_gray pr-0" v-model="age" @change="geAgeFilter($event)">
+                <select
+                  class="w-100 font14 clr_gray pr-0"
+                  v-model="age"
+                  @change="geAgeFilter($event)"
+                >
                   <option value="">Age</option>
                   <option value="">Any</option>
-                  <option v-for="(option, name) in filtersAge" :value="name" :key="option">{{ option }}</option>
+                  <option
+                    v-for="(option, name) in filtersAge"
+                    :value="name"
+                    :key="option"
+                  >
+                    {{ option }}
+                  </option>
                 </select>
               </div>
             </div>
@@ -257,7 +296,7 @@
               v-for="item in cars"
               :key="item.id"
             >
-              <div class="card"  @click="getCarDetails(item)">
+              <div class="card" @click="getCarDetails(item)">
                 <div class="postion-relative">
                   <img v-bind:src="item.thumb_url" class="w-100" />
                   <h5
@@ -278,7 +317,7 @@
                     <img src="../assets/img/icon5.png" alt="heart" />
                   </div>
                   <p class="font14 clr_gray pt-1 pb-1">
-                    {{ item.derivative }}    {{ item.colour_spec }} <br />
+                    {{ item.derivative }} {{ item.colour_spec }} <br />
                     Your price: £{{ item.current_price }}
                   </p>
                   <h2 class="is-inline-block font-600">
@@ -529,29 +568,29 @@
         </div>
       </div>
     </section>
-     <FooterNav/>
+    <FooterNav />
   </div>
 </template>
 
 <script>
 import { HTTP } from "../http-common";
-import AppNavigation from '@/components/AppNavigation';
-import FooterNav from '@/components/FooterNav';
+import AppNavigation from "@/components/AppNavigation";
+import FooterNav from "@/components/FooterNav";
 export default {
   name: "myStore",
   components: {
-        AppNavigation,
-        FooterNav
+    AppNavigation,
+    FooterNav,
   },
   data() {
     return {
       msg: "Welcome to my Vuex Store",
       cars: [],
-      filters_make:[],
-      filtersmileage:[],
-      filtersAge:[],
+      filters_make: [],
+      filtersmileage: [],
+      filtersAge: [],
       IsLoading: true,
-      sortBy: "ASC",
+      sortBy: "DESC",
       totalCars: 0,
       Finance_Type: "car_loan_hp",
       pagination_page_no: 1,
@@ -564,8 +603,9 @@ export default {
       make: "",
       modal: "",
       payment: "",
-      mileage_key:"",
-      age:""
+      mileage_key: "",
+      age: "",
+      sort_order:[],
     };
   },
 
@@ -622,29 +662,28 @@ export default {
       this.getCars();
     },
 
-    getMakeFilter(){
-       this.pagination_page_no = 1;
-       this.getCars();
+    getMakeFilter() {
+      this.pagination_page_no = 1;
+      this.getCars();
     },
 
-    geAgeFilter(){
-       this.pagination_page_no = 1;
-       this.getCars();
+    geAgeFilter() {
+      this.pagination_page_no = 1;
+      this.getCars();
     },
 
-    getModalFilter(){
-       this.pagination_page_no = 1;
-       this.getCars();
+    getModalFilter() {
+      this.pagination_page_no = 1;
+      this.getCars();
     },
-    getMilageFilter(){
-       this.pagination_page_no = 1;
-       this.getCars();
-    },
-
-    getCarDetails(data){
-         this.$router.push("/cars/view/"+data.id+'_'+this.car_Type) 
+    getMilageFilter() {
+      this.pagination_page_no = 1;
+      this.getCars();
     },
 
+    getCarDetails(data) {
+      this.$router.push("/cars/view/" + data.id + "_" + this.car_Type);
+    },
 
     getCars() {
       var postData = {
@@ -674,12 +713,12 @@ export default {
         rating: "excellent",
         sort: { key: "monthly_payment", order: this.sortBy },
       };
-      console.log(postData)
+      console.log(postData);
       HTTP.post("api/v2/cars/browse", postData).then((response) => {
         //console.log(response)
         if (response.status == 200) {
           this.cars = response.data.results;
-          console.log(this.cars)
+          console.log(this.cars);
           this.IsLoading = false;
           this.totalCars = response.data.pagination.total;
           this.last_page = response.data.pagination.last_page;
@@ -697,7 +736,8 @@ export default {
         if (response.status == 200) {
           this.filters_make = response.data.fields.stocks.makes;
           this.filtersmileage = response.data.fields.filters.mileage;
-          this.filtersAge= response.data.fields.filters.age;
+          this.filtersAge = response.data.fields.filters.age;
+          this.sort_order = response.data.fields.filters.sort_order.default
         } else {
           this.IsLoading = false;
         }
@@ -706,61 +746,60 @@ export default {
       });
     },
 
-    reset(){
-     this.$router.push('/cars') 
-        
+    reset() {
+      this.$router.push("/cars");
     },
 
-     applyFill(slider) {
-          // Let's turn our value into a percentage to figure out how far it is in between the min and max of our input
-          const percentage = 100*(slider.value-slider.min)/(slider.max-slider.min);
+    applyFill(slider) {
+      // Let's turn our value into a percentage to figure out how far it is in between the min and max of our input
+      const percentage =
+        (100 * (slider.value - slider.min)) / (slider.max - slider.min);
 
-          const settings={
-            fill: '#FF23B7',
-            background: '#d7dcdf'
-          }
+      const settings = {
+        fill: "#FF23B7",
+        background: "#d7dcdf",
+      };
 
-          // now we'll create a linear gradient that separates at the above point
-          // Our background color will change here
-          const bg = `linear-gradient(90deg, ${settings.fill} ${percentage}%, ${settings.background} ${percentage+0.1}%)`;
-          slider.style.background = bg;
-      } 
+      // now we'll create a linear gradient that separates at the above point
+      // Our background color will change here
+      const bg = `linear-gradient(90deg, ${settings.fill} ${percentage}%, ${
+        settings.background
+      } ${percentage + 0.1}%)`;
+      slider.style.background = bg;
+    },
   },
 
   mounted() {
     console.log(this.$route.query.make);
 
     if (this.$route.query.make) {
-        this.make = this.$route.query.make;
-        this.modal = this.$route.query.modal;
-        this.payment = this.$route.query.payment;
-
+      this.make = this.$route.query.make;
+      this.modal = this.$route.query.modal;
+      this.payment = this.$route.query.payment;
     }
 
     if (this.$route.query.f) {
-        this.car_Type = this.$route.query.f;
-        
+      this.car_Type = this.$route.query.f;
     }
     this.getCars();
     this.GetFiltersettings();
 
-    const sliders = document.querySelectorAll('.range-slider');
+    const sliders = document.querySelectorAll(".range-slider");
 
-      // Iterate through that list of sliders
-      // ... this call goes through our array of sliders [slider1,slider2,slider3] and inserts them one-by-one into the code block below with the variable name (slider). We can then access each of wthem by calling slider
-      Array.prototype.forEach.call(sliders,(slider)=>{
-        // Look inside our slider for our input add an event listener
+    // Iterate through that list of sliders
+    // ... this call goes through our array of sliders [slider1,slider2,slider3] and inserts them one-by-one into the code block below with the variable name (slider). We can then access each of wthem by calling slider
+    Array.prototype.forEach.call(sliders, (slider) => {
+      // Look inside our slider for our input add an event listener
       //   ... the input inside addEventListener() is looking for the input action, we could change it to something like change
-        slider.querySelector('input').addEventListener('input', (event)=>{
-          // 1. apply our value to the span
-          //slider.querySelector('.range-slider__value').innerHTML = event.target.value;
-          // 2. apply our fill to the input
-          this.applyFill(event.target);
-        });
-        // Don't wait for the listener, apply it now!
-        this.applyFill(slider.querySelector('input'));
+      slider.querySelector("input").addEventListener("input", (event) => {
+        // 1. apply our value to the span
+        //slider.querySelector('.range-slider__value').innerHTML = event.target.value;
+        // 2. apply our fill to the input
+        this.applyFill(event.target);
       });
-
+      // Don't wait for the listener, apply it now!
+      this.applyFill(slider.querySelector("input"));
+    });
   },
 };
 </script>
