@@ -155,10 +155,20 @@
                            <div class="control">
                               <div class="select w-100">
                                  <label>Quote me based on</label>
-                                 <select class="w-100 font14 clr_gray p-0">
-                                    <option>Monthly payments</option>
-                                    <option>Monthly payments</option>
-                                 </select>
+                                 <select
+                                       class="w-100 font14 clr_gray p-0"
+                                          v-model="make_"
+                                          @change="getMakeFilter($event)"
+                                          >
+                                          <option value="">Choose a make</option>
+                                          <option
+                                             v-for="(option, index) in filters_stocks.makes"
+                                             :value="option"
+                                             :key="index"
+                                          >
+                                             {{ option }}
+                                          </option>
+                                       </select>
                               </div>
                            </div>
                         </div>
@@ -166,37 +176,68 @@
                            <div class="control">
                               <div class="select w-100">
                                  <label>My credit rating is</label>
-                                 <select class="w-100 font14 clr_gray p-0">
-                                    <option>Monthly payments</option>
-                                    <option>Monthly payments</option>
-                                 </select>
+                                 <select
+                                       class="w-100 font14 clr_gray p-0"
+                                          v-model="rating_"
+                                          @change="getRatingFilter($event)"
+                                          >
+                                          <option value="">Choose a rating</option>
+                                          <option
+                                             v-for="(option, name) in filters_finance.credit_rating"
+                                             :value="name"
+                                             :key="name"
+                                          >
+                                             {{ option }}
+                                          </option>
+                                       </select>
                               </div>
                            </div>
                         </div>
                      </div>
                      <div class="rang_sec">
                         <div class="range-slider pt-5">
-                           <div class="font12 range_value font-weight-bold clr_gray is-justify-content-space-between is-flex">
-                              <label class="">Credit term</label>
-                              <label class="range-slider__value">36 months</label>
+                              <div class="font12 range_value font-weight-bold clr_gray is-justify-content-space-between is-flex">
+                                 <label class="">Credit term</label>
+                                 <label class="range-slider__value">{{term_}} months</label>
+                              </div>
+
+                                       <input
+                                             class="range-slider__range"
+                                             v-model="term_"
+                                             type="range"
+                                             min="1"
+                                             max="60"
+                                             step="1"
+                                             @change="changeTerm()"
+                                       />
                            </div>
-                           <input class="range-slider__range" type="range" value="12" min="0" max="36">  
-                        </div>
-                        <div class="range-slider pt-5">
-                           <div class="font12 range_value font-weight-bold clr_gray is-justify-content-space-between is-flex">
-                              <label class="">36 months</label>
-                              <label class="range-slider__value">£1,250</label>
+                           <!-- =================================  section  =================================   -->
+                           <div class="range-slider pt-5">
+                                 <div class="font12 range_value font-weight-bold clr_gray is-justify-content-space-between is-flex">
+                                    <label class="">Deposit</label>
+                                    <label class="range-slider__value">£{{deposit_}}</label>
+                                 </div>
+
+                                 <input
+                                    class="range-slider__range"
+                                    v-model="deposit_"
+                                    type="range"
+                                    min="1"
+                                    max="60000"
+                                    step="1"
+                                    @change="changeDeposit()"
+                                 />
                            </div>
-                           <input class="range-slider__range" type="range" value="12" min="0" max="36">  
                         </div>
-                     </div>
                   </div>
                </div>
                <div class="range_slide_content has-text-centered">
-                  <p class="clr_gray font16 font-600">You could borrow up to</p>
-                  <h1 class="clr-pink">£41,239</h1>
-                  <p class="font12 clr_gray">Based on Excellent credit rating you can borrow approximately £41,239. Representative APR: 5.91%, Fixed Rate(Per Annum): 3.04%, Cost of Credit: £3,761, Total Repayable: £45,000.</p>
-                  <a href="#" class="bg-pink cwhite is-inline-block btn margintop60">View available stock</a>
+                     <p class="clr_gray font16 font-600">You could borrow up to</p>
+                     <h1 class="clr-pink">£{{finance_res.loan_amount}}</h1>
+                     <p class="font12 clr_gray">
+                        Based on <span style="text-transform: capitalize;">{{rating_}}</span> credit rating you can borrow approximately £{{finance_res.loan_amount}}. Representative APR: : {{finance_res.apr}}%, Fixed Rate(Per Annum):  {{finance_res.flat_rate}}%, Cost of Credit: £{{finance_res.total_cost}}, Total Repayable: £{{finance_res.total_payable}}.
+                     </p>
+                     <a href="#" class="bg-pink cwhite is-inline-block btn margintop60">View available stock</a>
                </div>
             </div>
          </div>
@@ -238,29 +279,149 @@
         <FooterNav/>
   </div>
 </template>
-
 <script>
-//import {HTTP} from '../http-common'
-import AppNavigation from '@/components/AppNavigation';
-import FooterNav from '@/components/FooterNav';
-//import VueRouter from 'vue-router';
+import { HTTP } from "../http-common";
+import AppNavigation from "@/components/AppNavigation";
+import FooterNav from "@/components/FooterNav";
+import "vue-toast-notification/dist/theme-sugar.css";
+import Vue from "vue";
+import VueToast from "vue-toast-notification";
 
+
+Vue.use(VueToast);
 
 export default {
-  name: 'blog',
+  name: "finance-calculater",
   components: {
-        AppNavigation,
-        FooterNav
-    },
-  data () {
+    AppNavigation,
+    FooterNav,
+  },
+  data() {
     return {
-      IsLoading:false,
-    }
+      filters_finance: [],
+      filters_stocks:[],
+      rating_:'fair',
+      make_:'',
+      term_:'60',
+      deposit_:'2000',
+      finance_res:[],
+      IsLoading:true
+    } 
   },
 
+  methods: {
 
-  
-  
-}
+
+    GetFiltersettings() {
+      HTTP.get("api/v2/app/settings").then((response) => {
+        console.log(response.data.fields.stocks.makes);
+        if (response.status == 200) {
+          this.filters_finance= response.data.fields.finance;
+          this.filters_stocks =  response.data.fields.stocks;
+          this.IsLoading = false
+        } else {
+          this.IsLoading = false;
+        }
+
+        // commit('SET_CARS', response.data)
+      });
+    },
+
+    getRatingFilter(e){
+           this.rating_ = e.target.value;
+           this.GetCarMonthlyPayment()
+    },
+
+    getMakeFilter(e){
+          this.make_ = e.target.value;
+          
+    },
+
+    changeTerm(){
+          this.GetCarMonthlyPayment()
+    },
+
+    changeDeposit(){
+        this.GetCarMonthlyPayment()
+    },
+
+   GetCarMonthlyPayment() {
+
+      var postData = {
+        monthly_budget: this.deposit_,
+        loan_term: this.term_,
+        self_rating: this.rating_
+      };
+
+      HTTP.post("/api/v2/finance/get-estimate", postData)
+        .then((response) => {
+          if (response.status == 200) {
+             this.finance_res = response.data;
+             this.IsLoading = false
+          } else {
+            this.IsLoading = false;
+          }
+        })
+        .catch((err) => {
+          if (err.response && err.response.status === 422) {
+            if (err.response.data.errors) {
+              console.log(
+                "First name errors: " + err.response.data.errors.join(",")
+              );
+              Vue.$toast.open({
+                message: err.response.data.errors.join(","),
+                type: "error",
+                // all of other options may go here
+              });
+            }
+
+            // and so on
+          }
+        });
+    },
+
+
+    applyFill(slider) {
+      // Let's turn our value into a percentage to figure out how far it is in between the min and max of our input
+      const percentage =
+        (100 * (slider.value - slider.min)) / (slider.max - slider.min);
+
+      const settings = {
+        fill: "#FF23B7",
+        background: "#d7dcdf",
+      };
+
+      // now we'll create a linear gradient that separates at the above point
+      // Our background color will change here
+      const bg = `linear-gradient(90deg, ${settings.fill} ${percentage}%, ${
+        settings.background
+      } ${percentage + 0.1}%)`;
+      slider.style.background = bg;
+    },
+  },
+
+  mounted() {
+   
+    this.GetFiltersettings();
+    this.GetCarMonthlyPayment();
+
+    const sliders = document.querySelectorAll(".range-slider");
+
+    // Iterate through that list of sliders
+    // ... this call goes through our array of sliders [slider1,slider2,slider3] and inserts them one-by-one into the code block below with the variable name (slider). We can then access each of wthem by calling slider
+    Array.prototype.forEach.call(sliders, (slider) => {
+      // Look inside our slider for our input add an event listener
+      //   ... the input inside addEventListener() is looking for the input action, we could change it to something like change
+      slider.querySelector("input").addEventListener("input", (event) => {
+        // 1. apply our value to the span
+        //slider.querySelector('.range-slider__value').innerHTML = event.target.value;
+        // 2. apply our fill to the input
+        this.applyFill(event.target);
+      });
+      // Don't wait for the listener, apply it now!
+      this.applyFill(slider.querySelector("input"));
+    });
+  },
+};
 </script>
 
