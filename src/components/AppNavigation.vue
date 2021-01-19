@@ -5,13 +5,13 @@
                     <nav class="navbar py-2" aria-label="main navigation">
                         <div class="navbar-brand column is-one-fifth pl-0 is-hidden-mobile">
                             <router-link class="navbar-item pl-0 is-hidden-mobile" to="/">
-                                <img src="../assets/img/logo_1.png" alt="" />
+                                <img src="../assets/img/logo_2.png" alt="" />
                             </router-link>
                         </div>
                         <div class="is-hidden-desktop is-flex is-align-items-center is-justify-content-space-between">
                             <a class="mobile-icon is-hidden-desktop" href="/"> FAIR<span>SQUARE</span> </a>
                             <div class="is-flex">
-                                <a class="call is-hidden-desktop"><i class="fas fa-phone-alt"></i></a>
+                                <a class="call is-hidden-desktop" href="tel:0345 003 0008"><i class="fas fa-phone-alt"></i></a>
                                 <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
                                     <span aria-hidden="true"></span>
                                     <span aria-hidden="true"></span>
@@ -30,7 +30,7 @@
                                 <router-link  to="/how-it-work"  :class="activeIndex == '/how-it-work' ? 'navbar-item active': 'navbar-item'">How it works</router-link>
                                 <router-link :class="activeIndex == '/help-advise' ? 'navbar-item active': 'navbar-item'"   to="/help-advise">Help & advice</router-link>
                                 <router-link :class="activeIndex == '/blog' ? 'navbar-item active': 'navbar-item'"   to="/blog" >Blog</router-link>
-                                <router-link class="navbar-item bg-pink cwhite mx-4" to="#">0345 003 0008</router-link>
+                                <router-link class="navbar-item bg-pink cwhite mx-4" to="#" href="tel:0345 003 0008">0345 003 0008</router-link>
                                 <router-link to="/login" class="navbar-item border-0">
                                     <img src="../assets/img/user.png" alt="like">
                                     <span class="pl-3"> Log in</span>
@@ -63,6 +63,8 @@ export default {
          window.scrollTo(0,0);
        
   }
+
 };
+
 </script>
 

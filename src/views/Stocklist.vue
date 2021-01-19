@@ -471,7 +471,7 @@
                     <!-- =================================  section  =================================   -->
                     <li class="w-100 px-2">
                       <span class="postion-relative w-100 is-inline-block">
-                        <span class="rounded border-blue">
+                        <span class="rounded border-pink-light">
                           <img
                             src="../assets/img/icon2.png"
                             class=""
@@ -493,7 +493,7 @@
                     <!-- =================================  section  =================================   -->
                     <li class="w-100 px-2">
                       <span class="postion-relative w-100 is-inline-block">
-                        <span class="rounded border-blue">
+                        <span class="rounded border-pink-dark">
                           <img
                             src="../assets/img/icon3.png"
                             class=""

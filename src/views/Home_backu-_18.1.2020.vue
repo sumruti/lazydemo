@@ -141,55 +141,54 @@
             </div>
         </section>
         <!-- =================================  section  =================================   -->
-        
- <section class="work-progress is-d-flex is-align-items-center">
+        <section class="work-progress is-d-flex is-align-items-center">
             <div class="columns">
                 <div class="column is-full postion-relative">
                     <ul class="clr_gray is-flex-tablet has-text-centered pt-5">
                         <!-- =================================  section  =================================   -->
                         <li class="">
-                            
                             <span class="postion-relative w-100 is-inline-block">
                                 <span class="rounded border-blue">
                                     <img src="../assets/img/icon1.png" class="" alt="icon1.png" />
                                 </span>
                                 <div class="steps postion-absolute">
-                                   <img src="../assets/img/step1.png" alt="step1">
+                                    <span class="steps1"></span>
+                                    <span class="steps2"></span>
+                                    <span class="steps3"></span>
+                                    <span class="steps4"></span>
                                 </div>
                             </span>
-                            <div class="work_inner">
+
                             <span class="heading font16 font-600">Find and finance the <br> perfect car online.</span>
                             <span class="font14 pt-2 is-inline-block">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
-                            </div>
                         </li>
                         <!-- =================================  section  =================================   -->
                         <li class="">
-                            
                             <span class="postion-relative w-100 is-inline-block">
-                                <span class="rounded border-pink-light">
+                                <span class="rounded border-blue">
                                     <img src="../assets/img/icon2.png" class="" alt="icon1.png" />
                                 </span>
                                 <div class="steps postion-absolute">
-                                    <img src="../assets/img/step2.png" alt="step2">
+                                    <span class="steps1"></span>
+                                    <span class="steps2"></span>
+                                    <span class="steps3"></span>
+                                    <span class="steps4"></span>
                                 </div>
                             </span>
-                            <div class="work_inner">
+
                             <span class="heading  font16 font-600">Delivere to your door<br> free of charge.</span>
                             <span class="font14 pt-2 is-inline-block">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
-                            </div>
                         </li>
                         <!-- =================================  section  =================================   -->
                         <li class="">
-                           
                             <span class="postion-relative w-100 is-inline-block">
-                                <span class="rounded border-pink-dark">
+                                <span class="rounded border-blue">
                                     <img src="../assets/img/icon3.png" class="" alt="icon1.png" />
                                 </span>
                             </span>
-                             <div class="work_inner">
+
                             <span class="heading font16 font-600">Love it. Keep it.<br>Or return it.</span>
                             <span class="font14 pt-2 is-inline-block">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
-                        </div>
                         </li>
                     </ul>
                 </div>
@@ -202,27 +201,22 @@
                 </div>
                 <!-- =================================  section  =================================   -->
                 <div class="column is-one-quarter is-full-mobile">
-                    <img src="../assets/img/cars2.jpg" class="image is-fullwidth" alt=" " />
+                    <img src="../assets/img/1.jpg" class="image is-fullwidth" alt=" " />
                     <p class="pt-5 font-weight-bold font-600">Browse Family Cars</p>
                 </div>
                 <!-- =================================  section  =================================   -->
                 <div class="column is-one-quarter is-full-mobile">
-                    <img src="../assets/img/cars3.jpg" class="image is-fullwidth" alt=" " />
+                    <img src="../assets/img/1.jpg" class="image is-fullwidth" alt=" " />
                     <p class="pt-5 font-weight-bold font-600">Browse Executive Cars</p>
                 </div>
                 <!-- =================================  section  =================================   -->
                 <div class="column is-one-quarter is-full-mobile">
-                    <img src="../assets/img/cars4.jpg" class="image is-fullwidth" alt=" " />
+                    <img src="../assets/img/1.jpg" class="image is-fullwidth" alt=" " />
                     <p class="pt-5 font-weight-bold font-600">Browse Electric/Hybrid Cars</p>
                 </div>
             </div>
         </section>
 
-
-
-
-
-        
         <!-- =================================  section  =================================   -->
         <section class="serives_section">
             <!-- =================================  section  =================================   -->

@@ -1,5 +1,5 @@
 <template>
-   <footer class="bg-light mt-3" id="FooterNav">
+   <footer class="bg-light position-relative" id="FooterNav">
             <div class="columns">
                 <div class="column is-one-five-tablet order2">
                     <div class="pr-4">

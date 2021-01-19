@@ -120,11 +120,12 @@
 
                 <div class="column is-one-third">
                     <div class="fin_right position-absolute">
-                        <div class="has-background-white has-text-center p-0">
+                        <div class="has-background-white postion-sticky has-text-center p-0">
                             <div class="card-inner card_inner_blog">
                                 <div class="finance_header has-text-centered is-flex is-align-items-center is-justify-content-center">
                                     <img src="../assets/img/logo_ftr.svg" alt="" class="img-full-width" />
                                 </div>
+                                <div class="o-hidden">
                                 <div class="blog_fist position-relative">
                                     <!-- =================================  section  =================================   -->
                                     <div class="control">
@@ -153,16 +154,18 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <a href="#" class="bg-pink-dark cwhite is-inline-block w-100 margintop60 btn is-hidden-mobile has-text-centered">Search</a>
+                                    <a href="#" class="bg-pink-dark cwhite is-inline-block w-100 margintop60 btn has-text-centered">Search</a>
                                 </div>
-                            </div>
-                        </div>
-
-                        <ul class="font16 font-600 fnlisting">
+                                 <ul class="font16 font-600 fnlisting">
                             <li><a href="#" class="clr_gray">How it works</a></li>
                             <li><a href="#" class="clr_gray">Help and advice</a></li>
                             <li><a href="#" class="clr_gray">Finance Calculator</a></li>
                         </ul>
+                        </div>
+                            </div>
+                        </div>
+
+                       
                     </div>
                 </div>
             </div>
@@ -188,6 +191,14 @@
 </template>
 
 <script>
+
+    // add sticky class
+            
+
+
+                
+
+
 //import {HTTP} from '../http-common'
 import AppNavigation from "@/components/AppNavigation";
 import FooterNav from "@/components/FooterNav";
@@ -271,10 +282,19 @@ export default {
     },
  
   mounted() {
+
         this.GetFiltersettings();
         
 
   }
 };
+
+
+
+
+
+
+          
+
 </script>
 

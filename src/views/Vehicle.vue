@@ -164,7 +164,7 @@
                           </span>
                           <div class="work_inner">
                             <span class="heading cwhite font16 font-600"
-                              >Find and finance the perfect car online.</span
+                              >Find and finance the <br>perfect car online.</span
                             >
                           </div>
                         </li>
@@ -184,7 +184,7 @@
                           </span>
                           <div class="work_inner">
                             <span class="heading cwhite font16 font-600"
-                              >Delivere to your door free of charge.</span
+                              >Delivere to your door<br> free of charge.</span
                             >
                           </div>
                         </li>
@@ -201,7 +201,7 @@
                           </span>
                           <div class="work_inner">
                             <span class="heading cwhite font16 font-600"
-                              >Love it. Keep it. Or return it.</span
+                              >Love it. Keep it.<br> Or return it.</span
                             >
                           </div>
                         </li>
@@ -222,7 +222,7 @@
         <div class="column is-one-four-desktop is-6-mobile">
           <div class="img_bloc is-flex-direction-column w-100">
             <img src="../assets/img/icon6.svg" alt="" class="is-fullwidth" />
-            <p class="font-600 clr_gray font14 pt-4 is-block">12.9k miles</p>
+            <p class="font-600 clr_gray font14 pt-4 is-block">{{car_detail.current_mileage }} miles</p>
           </div>
         </div>
         <!-- =================================  section  =================================  -->
@@ -244,7 +244,7 @@
         <div class="column is-one-four-desktop is-6-mobile">
           <div class="img_bloc is-flex-direction-column w-100">
             <img src="../assets/img/icon9.svg" alt="" class="is-fullwidth" />
-            <p class="font-600 clr_gray font14 pt-4 is-block">1.8L</p>
+            <p class="font-600 clr_gray font14 pt-4 is-block">{{car_detail.engine_size ? car_detail.engine_size+'L' : ''}}</p>
           </div>
         </div>
         <!-- =================================  section  =================================  -->
@@ -303,10 +303,10 @@
                               class="table w-100 is-sdliped font14 font-600 clr_gray"
                             >
                               <dl v-for="item in specification" :key="item">
-                                <dd v-if="item">Spec item</dd>
-                                <dd v-if="item">{{item}}</dd>
-                                <dd v-if="item">Spec item</dd>
-                                <dd v-if="item">Spec detail</dd>
+                                <dd v-if="item"> {{item}}</dd>
+                                <dd v-if="item"></dd>
+                                <dd v-if="item"> </dd>
+                                <dd v-if="item"> </dd>
                               </dl>
                               
                             </div>
