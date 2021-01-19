@@ -303,7 +303,7 @@
                               class="table w-100 is-sdliped font14 font-600 clr_gray"
                             >
                               <dl v-for="item in specification" :key="item">
-                                <dd v-if="item"> {{item}}</dd>
+                                <dd v-if="item" style="width:50%"> {{item}}</dd>
                                 <dd v-if="item"></dd>
                                 <dd v-if="item"> </dd>
                                 <dd v-if="item"> </dd>
