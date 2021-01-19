@@ -19,7 +19,7 @@
                         <li><a href="#">Sell my car</a></li>
                         <li><router-link to="/how-it-work">How it works</router-link></li>
                         <li><a href="#">Contact us</a></li>
-                        <li><router-link href="/to">Log in</router-link></li>
+                        <li><router-link to="/to">Log in</router-link></li>
                         <li></li>
                     </ul>
                 </div>
