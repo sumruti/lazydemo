@@ -113,7 +113,7 @@
                                                 <div class="range-slider pt-5">
                                                     <div class="font12 range_value font-weight-bold clr_gray is-justify-content-space-between is-flex">
                                                         <label class="">Deposit</label>
-                                                        <label class="range-slider__value">£{{deposit_}}</label>
+                                                        <label class="range-slider__value">£{{priceFormat(deposit_)}}</label>
                                                     </div>
 
                                                     <input
@@ -132,9 +132,9 @@
 
                                     <div class="range_slide_content has-text-centered">
                                         <p class="clr_gray font16 font-600">You could borrow up to</p>
-                                        <h1 class="clr-pink">£{{finance_res.loan_amount}}</h1>
+                                        <h1 class="clr-pink">£{{priceFormat(finance_res.loan_amount)}}</h1>
                                         <p class="font12 clr_gray">
-                                            Based on <span style="text-transform: capitalize;">{{rating_}}</span> credit rating you can borrow approximately £{{finance_res.loan_amount}}. Representative APR: : {{finance_res.apr}}%, Fixed Rate(Per Annum):  {{finance_res.flat_rate}}%, Cost of Credit: £{{finance_res.total_cost}}, Total Repayable: £{{finance_res.total_payable}}.
+                                            Based on <span style="text-transform: capitalize;">{{rating_}}</span> credit rating you can borrow approximately £{{priceFormat(finance_res.loan_amount)}}. Representative APR: : {{finance_res.apr}}%, Fixed Rate(Per Annum):  {{priceFormat(finance_res.flat_rate)}}%, Cost of Credit: £{{priceFormat(finance_res.total_cost)}}, Total Repayable: £{{priceFormat(finance_res.total_payable)}}.
                                         </p>
                                         <a href="#" class="bg-pink cwhite is-inline-block btn margintop60">View available stock</a>
                                     </div>
@@ -282,7 +282,7 @@ export default {
 
     GetFiltersettings() {
       HTTP.get("api/v2/app/settings").then((response) => {
-        console.log(response.data.fields.stocks.makes);
+       
         if (response.status == 200) {
           this.filters_finance= response.data.fields.finance;
           this.filters_stocks =  response.data.fields.stocks;
@@ -312,6 +312,11 @@ export default {
     changeDeposit(){
         this.GetCarMonthlyPayment()
     },
+     priceFormat(x) {
+          if(x){
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+          }
+    },
 
      GetCarMonthlyPayment() {
 
@@ -333,9 +338,7 @@ export default {
         .catch((err) => {
           if (err.response && err.response.status === 422) {
             if (err.response.data.errors) {
-              console.log(
-                "First name errors: " + err.response.data.errors.join(",")
-              );
+             
               Vue.$toast.open({
                 message: err.response.data.errors.join(","),
                 type: "error",

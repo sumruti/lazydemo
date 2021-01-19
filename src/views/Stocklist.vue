@@ -318,10 +318,10 @@
                   </div>
                   <p class="font14 clr_gray pt-1 pb-1">
                     {{ item.derivative }} {{ item.colour_spec }} <br />
-                    Your price: £{{ item.current_price }}
+                    Your price: £{{priceFormat(item.current_price)  }}
                   </p>
                   <h2 class="is-inline-block font-600">
-                    £{{ item.monthly_payment }}
+                    £{{priceFormat(item.monthly_payment)  }}
                     <span class="clr_gray font12 is-block has-text-right"
                       >Per Month</span
                     >
@@ -329,7 +329,7 @@
                 </div>
                 <div class="card-footer">
                   <ul class="is-flex is-justify-content-space-between w-100">
-                    <li class="font12 font-600">12.9k</li>
+                    <li class="font12 font-600">{{ item.current_mileage  }}k</li>
                     <li class="font12 font-600">{{ item.model_year }}</li>
                     <li class="font12 font-600">{{ item.model }}</li>
                     <li class="font12 font-600">1.8L</li>
@@ -713,12 +713,12 @@ export default {
         rating: "excellent",
         sort: { key: "monthly_payment", order: this.sortBy },
       };
-      console.log(postData);
+      
       HTTP.post("api/v2/cars/browse", postData).then((response) => {
-        //console.log(response)
+        
         if (response.status == 200) {
           this.cars = response.data.results;
-          console.log(this.cars);
+          
           this.IsLoading = false;
           this.totalCars = response.data.pagination.total;
           this.last_page = response.data.pagination.last_page;
@@ -732,7 +732,7 @@ export default {
 
     GetFiltersettings() {
       HTTP.get("api/v2/app/settings").then((response) => {
-        console.log(response.data.fields.stocks.makes);
+        
         if (response.status == 200) {
           this.filters_make = response.data.fields.stocks.makes;
           this.filtersmileage = response.data.fields.filters.mileage;
@@ -748,6 +748,12 @@ export default {
 
     reset() {
       this.$router.push("/cars");
+    },
+     priceFormat(x) {
+     if(x){
+         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+     }
+      
     },
 
     applyFill(slider) {
@@ -770,7 +776,7 @@ export default {
   },
 
   mounted() {
-    console.log(this.$route.query.make);
+    
 
     if (this.$route.query.make) {
       this.make = this.$route.query.make;

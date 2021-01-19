@@ -50,10 +50,10 @@
               <div class="column is-one-quarter right-card">
                 <div class="card p-lg-6 has-text-centered mt-60">
                   <p class="is-inline-block pt-2 clr_gray font14">
-                     Your price: £{{ car_detail.current_price }}
+                     Your price: £{{ priceFormat(car_detail.current_price) }}
                   </p>
                   <h1 class="is-inline-block pt-4 clr-pink font-600">
-                    £{{ monthly_payment}}
+                    £{{ priceFormat(monthly_payment)}}
                     <span class="clr_gray font18 is-block has-text-right"
                       >Per Month</span
                     >
@@ -83,7 +83,7 @@
                       class="font12 range_value font-weight-bold clr_gray is-justify-content-space-between is-flex"
                     >
                       <label class="">Deposit</label>
-                      <label class="range-slider__value">£{{deposite_range}}</label>
+                      <label class="range-slider__value">£{{priceFormat(deposite_range)}}</label>
                     </div>
                     <input
                       class="range-slider__range"
@@ -121,7 +121,7 @@
               class="column is-half-tablet is-flex is-justify-content-flex-end"
             >
               <h4 class="font18 font-600">
-                <span class="price">  £{{monthly_payment}} per month</span>
+                <span class="price">  £{{priceFormat(monthly_payment)}} per month</span>
                 <a
                   href="#"
                   class="bg-pink cwhite is-inline-block btn is-hidden-mobile"
@@ -612,7 +612,7 @@
                 class="font12 range_value font-weight-bold clr_gray is-justify-content-space-between is-flex"
               >
                 <label class="">Deposit</label>
-                <label class="range-slider__value">£{{deposit_}}</label>
+                <label class="range-slider__value">£{{priceFormat(deposit_)}}</label>
               </div>
 
               <input
@@ -637,9 +637,9 @@
               >You could borrow up to</label
             >
             <h2 class="is-inline-block font-600 w-100 clr-pink pt-2">
-              £{{ Math.floor(finance_res.loan_amount)}}
+              £{{ priceFormat(finance_res.loan_amount)}}
             </h2>
-            <p class="font12 clr_gray font-weight-normal"> Based on <span style="text-transform: capitalize;">{{rating_}}</span> credit rating you can borrow approximately £{{finance_res.loan_amount}}. Representative APR: : {{finance_res.apr}}%, Fixed Rate(Per Annum):  {{finance_res.flat_rate}}%, Cost of Credit: £{{finance_res.total_cost}}, Total Repayable: £{{finance_res.total_payable}}.            </p>
+            <p class="font12 clr_gray font-weight-normal"> Based on <span style="text-transform: capitalize;">{{rating_}}</span> credit rating you can borrow approximately £{{priceFormat(finance_res.loan_amount)}}. Representative APR: : {{finance_res.apr}}%, Fixed Rate(Per Annum):  {{priceFormat(finance_res.flat_rate)}}%, Cost of Credit: £{{priceFormat(finance_res.total_cost)}}, Total Repayable: £{{priceFormat(finance_res.total_payable)}}.            </p>
             <a @click="getMyDeal()" href="#" class="bg-pink cwhite is-inline-block mt-5 btn"
               >Get my deal</a
             >
@@ -932,7 +932,7 @@ export default {
                 var img =  response.data.images;
                
               for(let i =0 ; i < img.length; i++){
-                     console.log(img[i].path)
+                     
                       if(this.checkImg(img[i].path)){
                         this.carimages.push(img[i].path)
                       }else{
@@ -942,7 +942,7 @@ export default {
                     
               }
 
-     console.log(this.carimages)
+     
         } else {
           this.IsLoading = false;
         }
@@ -995,9 +995,10 @@ export default {
 
       HTTP.post("api/v2/cars/price/" + cardId, postData)
         .then((response) => {
-          console.log(response.data);
+          
           if (response.status == 200) {
-            console.log("!he");
+            
+            
             this.monthly_payment = response.data.monthly_payment;
           } else {
             this.IsLoading = false;
@@ -1006,9 +1007,8 @@ export default {
         .catch((err) => {
           if (err.response && err.response.status === 422) {
             if (err.response.data.errors) {
-              console.log(
-                "First name errors: " + err.response.data.errors.join(",")
-              );
+              
+              
               Vue.$toast.open({
                 message: err.response.data.errors.join(","),
                 type: "error",
@@ -1041,12 +1041,14 @@ export default {
           // now we'll create a linear gradient that separates at the above point
           // Our background color will change here
           const bg = `linear-gradient(90deg, ${settings.fill} ${percentage}%, ${settings.background} ${percentage+0.1}%)`;
+         
+         
           slider.style.background = bg;
       },
       
     GetFiltersettings() {
       HTTP.get("api/v2/app/settings").then((response) => {
-        console.log(response.data.fields.stocks.makes);
+        
         if (response.status == 200) {
           this.filters_finance= response.data.fields.finance;
           this.IsLoading = false
@@ -1070,6 +1072,12 @@ export default {
            this.rating_ = e.target.value;
             this.GetCarMonthlyPayment_by_rating()
     },
+    priceFormat(x) {
+        if(x){
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+      
+    },
 
      GetCarMonthlyPayment_by_rating() {
        var postData = {
@@ -1090,9 +1098,7 @@ export default {
         .catch((err) => {
           if (err.response && err.response.status === 422) {
             if (err.response.data.errors) {
-              console.log(
-                "First name errors: " + err.response.data.errors.join(",")
-              );
+              
               Vue.$toast.open({
                 message: err.response.data.errors.join(","),
                 type: "error",

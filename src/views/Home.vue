@@ -357,12 +357,10 @@ export default {
             
                HTTP.get('api/v2/app/settings')
                 .then(response => {
-                    console.log(response.data.fields.stocks.makes)
                     if(response.status == 200){
                             this.filters_make = response.data.fields.stocks.makes;
                             this.modals_filter = response.data.fields.stocks.makes;
                             this.IsLoading = false;
-                            console.log(this.filters_make)
                             
                     }else{  
                         this.IsLoading = false;
@@ -377,9 +375,9 @@ export default {
 
 
         search(){
-             if(this.make && this.modal && this.payment){
+            // if(this.make && this.modal && this.payment){
                    this.$router.push('/cars?make='+this.make+'&modal='+this.modal+'&payment='+this.payment) 
-             }
+             //}
              
            
            
