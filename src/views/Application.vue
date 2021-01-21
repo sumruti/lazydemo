@@ -1,77 +1,59 @@
 <template>
   <div class="application">
-        <div class="loder_main"  v-if="IsLoading">
-          <div class="loader_"></div>
-        </div> 
+    <div class="loder_main" v-if="IsLoading">
+      <div class="loader_"></div>
+    </div>
     <app-navigation></app-navigation>
-    <section class="home_banner">
-      <div class="application_front"></div>
-      <div class="overlay_box w-100 postion-absolute is-flex m-auto">
-        <!--  ==========================  form columns ==========================    -->
-        <div class="columns px-0">
-          <div class="column is-full is-flex">
-            <!--  ==========================  body ==========================    -->
-            <div class="img-blog" v-bind:style="{ backgroundImage: 'url(' + car_detail.thumb_url + ')' }" >
-                 <!-- <img v-bind:src="car_detail.thumb_url" class="w-100" style="width: 37% !important;"/>-->
+     <section class="home_banner">
+            <div class="application_front"></div>
+            <div class="overlay_box w-100 postion-absolute is-flex m-auto">
+                <!--  ==========================  form columns ==========================    -->
+                <div class="columns px-0">
+                    <div class="column is-full is-flex">
+                        <!--  ==========================  body ==========================    -->
+                        <div class="img-blog is-hidden-mobile" v-bind:style="{ backgroundImage: 'url(' + car_detail.thumb_url + ')' }">
+                            <!--  <img src="img/application_banr.jpg" alt="" /> -->
+                        </div>
+                        <!--  ==========================  body ==========================    -->
+                        <div class="app_form has-background-white is-flex is-align-items-center is-flex-wrap-wrap is-flex-direction-column bxshadow2 p50 h100 clr_gray">
+                            <h5 class="font32">{{ car_detail.make }} {{ car_detail.model }}</h5>
+                            <p class="font16 font-weight-normal"> {{ car_detail.derivative }}    {{ car_detail.colour_spec }}</p>
+                            <!--  ==========================  price_div ==========================    -->
+                            <div class="py-50 price_div pbm-0">
+                                <p class="font14">Your price: £{{ priceFormat(car_detail.current_price) }}</p>
+                                <h2 class="is-inline-block font-600 title-price clr-pink"> £{{ priceFormat(monthly_payment)}} <span class="clr_gray font18 is-block has-text-right">Per Month</span></h2>
+                            </div>
+                            <!--  ==========================  items ==========================    -->
+                            <div class="is-flex-direction-column is-flex is-align-items-center is-hidden-mobile">
+                                <ul class="font14">
+                                    <li><i class="fas fa-check"></i> Competitive finance</li>
+                                    <li><i class="fas fa-check"></i> Free delivery</li>
+                                    <li><i class="fas fa-check"></i> 14-day money back</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cwhite app_footer is-flex is-justify-content-space-between pt-5 ">
+                        <div class="column is-8-tablet is-flex ptm-30">
+                            <i class="fa fa-info-circle font30" aria-hidden="true"></i>
+                            <div>
+                                <p class="font14 font-600">We perform a soft search credit check.</p>
+                                <p class="font14 pt-2">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="column is-4-tablet">
+
+                            <a href="#" class="login_btn  font14 cwhite font14 is-text-decoration-underline font-600 is-pulled-right">Already have an account? Log in.</a>
+
+                            <a href="#" class="referal_btn font14  font14 is-text-decoration-underline font-600 is-hidden-tablet">Do you have a referal code?</a>
+                            
+                        </div>
+                    </div>
+                </div>
             </div>
-            <!--  ==========================  body ==========================    -->
-            <div
-              class="app_form has-background-white is-flex is-align-items-center is-flex-wrap-wrap is-flex-direction-column bxshadow2 p50 h100 clr_gray"
-            >
-              <h5 class="font32">
-                {{ car_detail.make }} {{ car_detail.model }}
-              </h5>
-              <p class="font16 font-weight-normal">
-                {{ car_detail.derivative }}
-              </p>
-              <!--  ==========================  price_div ==========================    -->
-              <div class="py-50 price_div">
-                <p class="font14">Your price:£{{ car_detail.current_price }}</p>
-                <h2 class="is-inline-block font-600 title-price clr-pink">
-                  £{{ monthly_payment }}
-                  <span class="clr_gray font18 is-block has-text-right"
-                    >Per Month</span
-                  >
-                </h2>
-              </div>
-              <!--  ==========================  items ==========================    -->
-              <div
-                class="is-flex-direction-column is-flex is-align-items-center"
-              >
-                <ul class="font14">
-                  <li><i class="fas fa-check"></i> Competitive finance</li>
-                  <li><i class="fas fa-check"></i> Free delivery</li>
-                  <li><i class="fas fa-check"></i> 14-day money back</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div
-            class="cwhite app_footer is-flex is-justify-content-space-between pt-5"
-          >
-            <div class="column is-8-tablet is-flex">
-              <i class="fa fa-info-circle font30" aria-hidden="true"></i>
-              <div>
-                <p class="font14 font-600">
-                  We perform a soft search credit check.
-                </p>
-                <p class="font14 pt-2">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                </p>
-              </div>
-            </div>
-            <div class="column is-4-tablet">
-              <a
-                href="#"
-                class="font14 cwhite font14 is-text-decoration-underline font-600 is-pulled-right"
-                >Already have an account? Log in.</a
-              >
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+        </section>
 
     <section class="pt-50 help_section">
       <div class="columns mb-0">
@@ -108,7 +90,6 @@
                         v-for="(option, index) in filters.title"
                         :value="option"
                         :key="index"
-                        
                       >
                         {{ option }}
                       </option>
@@ -167,7 +148,7 @@
                       type="text"
                       name="Contact number"
                       placeholder="Contact number"
-                       v-model="mobile"
+                      v-model="mobile"
                     />
                   </div>
                 </div>
@@ -178,14 +159,14 @@
                       type="date"
                       name="date"
                       data-start-date="10/24/2019"
-                       v-model="dob"
+                      v-model="dob"
                     />
                   </div>
                 </div>
                 <!-- ========================  control ========================   -->
                 <div class="control">
                   <div class="select w-100 px-0 postion-relative">
-                    <select class="w-100"  v-model="marital_status">
+                    <select class="w-100" v-model="marital_status">
                       <option value="">Marital Status</option>
                       <option
                         v-for="(option, name) in filters.marital_status"
@@ -229,7 +210,7 @@
                         type="text"
                         name="Post-code"
                         placeholder="Post code"
-                         v-model="postcode"
+                        v-model="postcode"
                       />
                     </div>
                     <a
@@ -252,7 +233,7 @@
                             class="font14 font-weight-bold clr_gray is-pulled-left"
                             >Residential status</label
                           >
-                          <select class="w-100"  v-model="residence_status">
+                          <select class="w-100" v-model="residence_status">
                             <option value="">Choose</option>
                             <option
                               v-for="(option, name) in address.residence_status"
@@ -382,17 +363,27 @@
           <div class="column is-half-tablet">
             <div class="field">
               <!-- ========================  control ========================   -->
-              <label class="check_custom font16 clr_gray font-weight-normal"  v-for="(item, index) in terms.checklist" :key="index"
-                >{{item}}
-                <input type="checkbox"  />
+              <label
+                class="check_custom font16 clr_gray font-weight-normal"
+                v-for="(item, index) in terms.checklist"
+                :key="index"
+                >{{ item }}
+                <input type="checkbox" />
                 <span class="checkmark"></span>
               </label>
-             
-              <p class="clr_gray font16 font-weight-normal"  v-for="(item, index) in terms.acknowledgements" :key="index">
-                  {{item}}
+
+              <p
+                class="clr_gray font16 font-weight-normal"
+                v-for="(item, index) in terms.acknowledgements"
+                :key="index"
+              >
+                {{ item }}
               </p>
 
-              <a href="#" @click="getMyExampleLenderQuote()" class="bg-pink cwhite is-inline-block btn margintop60"
+              <a
+                href="#"
+                @click="getMyExampleLenderQuote()"
+                class="bg-pink cwhite is-inline-block btn margintop60"
                 >Get my example lender quote</a
               >
               <!-- ========================  control ========================   -->
@@ -413,42 +404,9 @@
         </div>
       </div>
     </section>
+    <Disclaimer/>
 
-    <!-- =================================  section  =================================   -->
-    <section class="section_4 mt-0 bg-light-white">
-      <!-- =================================  section  =================================   -->
-
-      <div class="columns cl_col_2">
-        <div class="column is-full">
-          <p class="clr_gray font12">
-            <strong> Legal disclaimer:</strong> Lorem ipsum dolor sit amet,
-            solum dictas vim cu, ne his hendrerit deterruisset, id sed doctus
-            fuisset intellegam. Per case melius assentior ea. Et scaevola
-            insolens eum. Ad vix verear eruditi ancillae, fabulas assentior his
-            at, eum no dico euripidis reprehendunt. Cibo delectus eu ius, usu
-            veri putent at.His tamquam evertitur appellantur an, eam omnis
-            blandit officiis id, eu nostro tacimates pri. Te vim denique
-            fabellas deseruisse, ad est mandamus neglegentur, vim adhuc
-            consequat an. At putent commodo patrioque pro, nihil reprimique et
-            pro. Et sea graece consulatu conclusionemque. Doctus iudicabit ex
-            eam.
-          </p>
-        </div>
-      </div>
-    </section>
-    <!-- =================================  footer  =================================   -->
-
-    <div class="bg_gray w-100 has-text-centered cwhite postion-relative">
-      <div class="columns is-align-items-center v_header_title">
-        <div class="column is-full has-text-centered">
-          <p class="font14">
-            Have questions or need help? Call us on<strong class="cwhite">
-              0345 003 0008</strong
-            >
-          </p>
-        </div>
-      </div>
-    </div>
+   
     <FooterNav />
   </div>
 </template>
@@ -456,9 +414,10 @@
 import { HTTP } from "../http-common";
 import AppNavigation from "@/components/AppNavigation";
 import FooterNav from "@/components/FooterNav";
-import Toasted from 'vue-toasted';
+import Disclaimer from "@/components/disclaimer";
+import Toasted from "vue-toasted";
 
-import Vue from 'vue';
+import Vue from "vue";
 
 Vue.use(Toasted);
 export default {
@@ -466,25 +425,26 @@ export default {
   components: {
     AppNavigation,
     FooterNav,
+    Disclaimer
   },
   data() {
     return {
       filters: [],
-      terms:[],
+      terms: [],
       address: [],
       car_detail: [],
       monthly_payment: [],
       IsLoading: true,
-      title_:'',
-      first_name:'',
-      last_name:'',
-      marital_status:'',
-      mobile:'',
-      dob:'',
-      postcode:'',
-      residence_status:'',
-      email:'',
-      password:''
+      title_: "",
+      first_name: "",
+      last_name: "",
+      marital_status: "",
+      mobile: "",
+      dob: "",
+      postcode: "",
+      residence_status: "",
+      email: "",
+      password: "",
     };
   },
 
@@ -502,141 +462,141 @@ export default {
         // commit('SET_CARS', response.data)
       });
     },
-  
 
-  getMyExampleLenderQuote(){
-     console.log(this.title_)
-       var postData = {
-            personal: { 
-                dob: this.dob,
-                driving_licence: '' ,
-                email: this.email,
-                first_name:this.first_name,
-                gender:'male',
-                last_name:this.last_name,
-                marital_status:this.marital_status,
-                mobile:this.mobile,
-                password:this.password,
-                title:this.title_
-            },
-            marketing: {
-                 agreed_marketing_options:'',
-                 is_email_opt_in:'',
-                 is_sms_opt_in:'',
-                 lead_medium:'',
-                 lead_source:'',
-                 promo_code:''
-            },
-            addresses:[{
-                 building_name:'',
-                 city:'',
-                 county:'',
-                 district:'',
-                 flat_no:'',
-                 house_no:'',
-                 id:'',
-                 postcode:'',
-                 residence_status:'',
-                 street:'',
-                 time_at_address:'',
-                 town:'',
-                 type:''
-            }]
-            };
+    getMyExampleLenderQuote() {
+      console.log(this.title_);
+      var postData = {
+        personal: {
+          dob: this.dob,
+          driving_licence: "",
+          email: this.email,
+          first_name: this.first_name,
+          gender: "male",
+          last_name: this.last_name,
+          marital_status: this.marital_status,
+          mobile: this.mobile,
+          password: this.password,
+          title: this.title_,
+        },
+        marketing: {
+          agreed_marketing_options: "",
+          is_email_opt_in: "",
+          is_sms_opt_in: "",
+          lead_medium: "",
+          lead_source: "",
+          promo_code: "",
+        },
+        addresses: [
+          {
+            building_name: "",
+            city: "",
+            county: "",
+            district: "",
+            flat_no: "",
+            house_no: "",
+            id: "",
+            postcode: "",
+            residence_status: "",
+            street: "",
+            time_at_address: "",
+            town: "",
+            type: "",
+          },
+        ],
+      };
 
-    HTTP.post("api/v2/account/create", postData)
-      .then((response) => {
-        console.log(response.data);
+      HTTP.post("api/v2/account/create", postData)
+        .then((response) => {
+          console.log(response.data);
+          if (response.status == 200) {
+            //this.monthly_payment = response.data.monthly_payment;
+          } else {
+            this.IsLoading = false;
+          }
+        })
+        .catch((err) => {
+          if (err.response && err.response.status === 422) {
+            if (err.response.data.errors) {
+              this.$toasted.show(err.response.data.errors[0], {
+                type: "error",
+                duration: 3000,
+                closeOnSwipe: true,
+              });
+            }
+
+            // and so on
+          }
+        });
+    },
+
+    GetCarById(car_id) {
+      var cardId = car_id.split("_")[0];
+
+      var postData = {
+        car_id: car_id,
+        loan: {
+          deposit: 9000,
+          mileage: 25000,
+          product: "new_car_pcp",
+          term: 48,
+        },
+        rating: "excellent",
+      };
+      HTTP.post("api/v2/cars/view/" + cardId, postData).then((response) => {
+        console.log(response);
         if (response.status == 200) {
-          this.monthly_payment = response.data.monthly_payment;
+          this.car_detail = response.data;
+          this.IsLoading = false;
         } else {
           this.IsLoading = false;
         }
-      })
-      .catch((err) => {
-        if (err.response && err.response.status === 422) {
-          if (err.response.data.errors) {
-                   this.$toasted.show( err.response.data.errors[0],{
-                        type : 'error',
-                         duration: 3000,
-                        closeOnSwipe:true,
-
-                    })
-
-          }
-
-          // and so on
-        }
       });
-         
-  },
+    },
 
-  GetCarById(car_id) {
-    var cardId = car_id.split("_")[0];
+    GetCarMonthlyPayment(car_id) {
+      var cardId = car_id.split("_")[0];
+      var car_type = car_id.split("_")[1];
 
-    var postData = {
-      car_id: car_id,
-      loan: {
+      var postData = {
+        car_type: car_type,
         deposit: 9000,
+        id: cardId,
         mileage: 25000,
         product: "new_car_pcp",
         term: 48,
-      },
-      rating: "excellent",
-    };
-    HTTP.post("api/v2/cars/view/" + cardId, postData).then((response) => {
-      console.log(response);
-      if (response.status == 200) {
-        this.car_detail = response.data;
-        this.IsLoading = false;
-      } else {
-        this.IsLoading = false;
-      }
-    });
-  },
+        rating: "excellent",
+      };
 
-  GetCarMonthlyPayment(car_id) {
-    var cardId = car_id.split("_")[0];
-    var car_type = car_id.split("_")[1];
-
-    var postData = {
-      car_type: car_type,
-      deposit: 9000,
-      id: cardId,
-      mileage: 25000,
-      product: "new_car_pcp",
-      term: this.term_range,
-      rating: "excellent",
-    };
-
-    HTTP.post("api/v2/cars/price/" + cardId, postData)
-      .then((response) => {
-        console.log(response.data);
-        if (response.status == 200) {
-          this.monthly_payment = response.data.monthly_payment;
-        } else {
-          this.IsLoading = false;
-        }
-      })
-      .catch((err) => {
-        if (err.response && err.response.status === 422) {
-
-            console.log(err.response.data.errors)
-          if (err.response.data.errors) {
-              
-              this.$toasted.show( err.response.data.errors[0],{
-                        type : 'error',
-                         duration: 3000,
-                        closeOnSwipe:true,
-
-                    })
+      HTTP.post("api/v2/cars/price/" + cardId, postData)
+        .then((response) => {
+          console.log(response.data);
+          if (response.status == 200) {
+            this.monthly_payment = response.data.monthly_payment;
+          } else {
+            this.IsLoading = false;
           }
+        })
+        .catch((err) => {
+          if (err.response && err.response.status === 422) {
+            console.log(err.response.data.errors);
+            if (err.response.data.errors) {
+              this.$toasted.show(err.response.data.errors[0], {
+                type: "error",
+                duration: 3000,
+                closeOnSwipe: true,
+              });
+            }
 
-          // and so on
-        }
-      });
-     },
-  }, 
+            // and so on
+          }
+        });
+    },
+    priceFormat(x) {
+      if (x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      }
+    },
+  },
 
   mounted() {
     this.GetFiltersettings();

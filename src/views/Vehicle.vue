@@ -8,7 +8,7 @@
       <div class="full-widht has-background-white">
         <div class="is-flex">
           <div id="img_gallery" class="w-100">
-            <carousel :per-page="3" :mouse-drag="true" v-if="car_detail">
+            <carousel :per-page="3" :mouse-drag="true" v-if="car_detail" :autoplay="true">
               <slide
                 v-for="(item, index) in carimages"
                 :key="index"
@@ -827,27 +827,9 @@
       </div>
     </section>
     <!-- =================================  section  =================================   -->
-    <section class="section_4 mt-0 bg-light-white">
       <!-- =================================  section  =================================   -->
 
-      <div class="columns cl_col_2">
-        <div class="column is-full">
-          <p class="clr_gray font12">
-            <strong> Legal disclaimer:</strong> Lorem ipsum dolor sit amet,
-            solum dictas vim cu, ne his hendrerit deterruisset, id sed doctus
-            fuisset intellegam. Per case melius assentior ea. Et scaevola
-            insolens eum. Ad vix verear eruditi ancillae, fabulas assentior his
-            at, eum no dico euripidis reprehendunt. Cibo delectus eu ius, usu
-            veri putent at.His tamquam evertitur appellantur an, eam omnis
-            blandit officiis id, eu nostro tacimates pri. Te vim denique
-            fabellas deseruisse, ad est mandamus neglegentur, vim adhuc
-            consequat an. At putent commodo patrioque pro, nihil reprimique et
-            pro. Et sea graece consulatu conclusionemque. Doctus iudicabit ex
-            eam.
-          </p>
-        </div>
-      </div>
-    </section>
+      <Disclaimer/>
     <FooterNav />
   </div>
 </template>
@@ -868,6 +850,8 @@ import Vue from "vue";
 import { Carousel, Slide } from "vue-carousel";
 
 import VueCarousel from "vue-carousel";
+import Disclaimer from '@/components/disclaimer';
+
 
 Vue.use(VueCarousel);
 Vue.use(VueToast);
@@ -880,6 +864,7 @@ export default {
     FooterNav,
     Carousel,
     Slide,
+    Disclaimer,
   },
   data: () => ({
     settings: {
@@ -985,7 +970,7 @@ export default {
 
       var postData = {
         car_type: car_type,
-        deposit: this.deposite_range,
+        deposit: 9000,
         id: cardId,
         mileage: 25000,
         product: "new_car_pcp",

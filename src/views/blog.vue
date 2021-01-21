@@ -1,6 +1,6 @@
 <template>
 
-  <div class="blog_listing">
+  <div class="blog_listing" style="margin-top: 115px;">
        <app-navigation></app-navigation>
        <div class="loder_main"  v-if="IsLoading">
                 <div class="loader_"></div>
@@ -8,39 +8,36 @@
 
        
        <!-- =================================Banner Section Start=================================   -->
-      <section class="blog is-flex is-align-items-flex-end position-relative ">
-         <div class="inner_container_2 ">
-            <div class="columns is-vcentered">
-               <!--  LEFT CONTAINER -->
-               <div class="column cwhite is-two-thirds pb60">
-                  <h3 class="common-heading">Lorem ipsum dolor sit amet</h3>
-                  <p class="common-content font18 pt-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-               </div>
-               <!--  RIGHT CONTAINER -->
-               <div class="column is-one-third postion-absolute right0">
-                  <div class="has-background-white postion-sticky has-text-center p-0">
-                     <img src="../assets/img/bnr.jpg" alt="" class="img-full-width" />
-                     <div class="card-inner">
-                        <div class="blog_fist position-relative">
-                           <p class="font16 clr_gray font-600">Find, finance and free delivery. The FairSquare way.</p>
-                           <p class="clr_gray font14 pt-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                           <a href="#" class="bg-pink cwhite is-inline-block btn mt-4">Find a car</a>
+      <section class="is-flex is-align-items-flex-end position-relative">
+            <div class="inner_container_2 ">
+                <div class="columns is-vcentered">
+                    <!--  RIGHT CONTAINER -->
+                    <div class="column is-one-third postion-absolute right0">
+                        <div class="has-background-white postion-sticky has-text-center p-0">
+                            <img src="img/bnr.jpg" alt="" class="img-full-width" />
+                            <div class="card-inner">
+                                <div class="blog_fist position-relative">
+                                    <p class="font16 clr_gray font-600">Find, finance and free delivery. The FairSquare way.</p>
+                                    <p class="clr_gray font14 pt-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                                    <a href="#" class="bg-pink cwhite is-inline-block btn mt-4">Find a car</a>
+                                </div>
+                                <div class="blog_fist inner2 position-relative">
+                                    <p class="font16 clr_gray font-600">Find, finance and free delivery. The FairSquare way.</p>
+                                    <p class="clr_gray font14 pt-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                                    <a href="#" class="bg-pink cwhite is-inline-block btn mt-4">Find a car</a>
+                                </div>
+                            </div>
                         </div>
-                        <div class="blog_fist inner2 position-relative">
-                           <p class="font16 clr_gray font-600">Find, finance and free delivery. The FairSquare way.</p>
-                           <p class="clr_gray font14 pt-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                           <a href="#" class="bg-pink cwhite is-inline-block btn mt-4">Find a car</a>
-                        </div>
-                     </div>
-                  </div>
-               </div>
+                    </div>
+                </div>
             </div>
-         </div>
-         <div class="share-fixed cwhite position-fixed has-text-centered">
-            <span class="bg-pink-dark"><i class="fas fa-share-alt"></i></span>
-            <p class="is-block font12 clr_gray font-600 text-share pt-2"> SHARE</p>
-         </div>
-      </section>
+            <div class="share-fixed cwhite position-fixed is-flex-wrap-wrap">
+                <span class="is-flex bg-pink">
+                    <i class="fas fa-share-alt"></i>
+                </span>
+                <span class="is-block font12 font-600 clr_gray p-2 text-share">SHARE</span>
+            </div>
+        </section>
       <!-- =================================Banner Section  End=================================   -->
       <!-- =================================Manufacturer-content Section Start=================================   -->
       <div class="blog_overlay_cotanienr">
@@ -262,20 +259,9 @@
             </div>
          </div>
       </div>
-      <section class="section_4 mt-0">
-         <div class="columns cl_col_2">
-            <div class="column is-full">
-               <p class="clr_gray font12">
-                  <strong> Legal disclaimer:</strong> Lorem ipsum dolor sit amet, solum dictas vim cu, ne his hendrerit deterruisset, id sed doctus fuisset intellegam. Per case melius assentior ea. Et scaevola insolens eum. Ad vix
-                  verear eruditi ancillae, fabulas assentior his at, eum no dico euripidis reprehendunt. Cibo delectus eu ius, usu veri putent at.His tamquam evertitur appellantur an, eam omnis blandit officiis id, eu nostro tacimates
-                  pri. Te vim denique fabellas deseruisse, ad est mandamus neglegentur, vim adhuc consequat an. At putent commodo patrioque pro, nihil reprimique et pro. Et sea graece consulatu conclusionemque. Doctus iudicabit ex
-                  eam.
-               </p>
-            </div>
-         </div>
-      </section>
+      
 
- 
+        <Disclaimer />
         <FooterNav/>
   </div>
 </template>
@@ -286,6 +272,7 @@ import FooterNav from "@/components/FooterNav";
 import "vue-toast-notification/dist/theme-sugar.css";
 import Vue from "vue";
 import VueToast from "vue-toast-notification";
+import Disclaimer from '@/components/disclaimer';
 
 
 Vue.use(VueToast);
@@ -295,6 +282,7 @@ export default {
   components: {
     AppNavigation,
     FooterNav,
+    Disclaimer
   },
   data() {
     return {

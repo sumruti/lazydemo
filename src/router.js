@@ -33,11 +33,11 @@ const router = new Router({
             name: 'modal',
             component: () => import('./views/ModalVue.vue'),
         },{
-            path: '/blog-listing',
+            path: '/blog',
             name: 'blogListing',
             component: () => import('./views/blogListing.vue'),
         },{
-            path: '/blog',
+            path: '/blog-listing',
             name: 'blog',
             component: () => import('./views/blog.vue'),
         },{

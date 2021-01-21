@@ -230,18 +230,7 @@
 
         <!-- =================================Manufacturer-content Section  End=================================   -->
 
-        <section class="section_4 mt-0">
-            <div class="columns cl_col_2">
-                <div class="column is-full">
-                    <p class="clr_gray font12">
-                        <strong> Legal disclaimer:</strong> Lorem ipsum dolor sit amet, solum dictas vim cu, ne his hendrerit deterruisset, id sed doctus fuisset intellegam. Per case melius assentior ea. Et scaevola insolens eum. Ad vix
-                        verear eruditi ancillae, fabulas assentior his at, eum no dico euripidis reprehendunt. Cibo delectus eu ius, usu veri putent at.His tamquam evertitur appellantur an, eam omnis blandit officiis id, eu nostro tacimates
-                        pri. Te vim denique fabellas deseruisse, ad est mandamus neglegentur, vim adhuc consequat an. At putent commodo patrioque pro, nihil reprimique et pro. Et sea graece consulatu conclusionemque. Doctus iudicabit ex
-                        eam.
-                    </p>
-                </div>
-            </div>
-        </section>
+        <Disclaimer />
  
         <FooterNav/>
   </div>
@@ -254,6 +243,8 @@ import FooterNav from "@/components/FooterNav";
 import "vue-toast-notification/dist/theme-sugar.css";
 import Vue from "vue";
 import VueToast from "vue-toast-notification";
+import Disclaimer from '@/components/disclaimer';
+
 
 
 Vue.use(VueToast);
@@ -263,6 +254,7 @@ export default {
   components: {
     AppNavigation,
     FooterNav,
+    Disclaimer
   },
   data() {
     return {
